@@ -2,15 +2,15 @@
 
 namespace Accounts.Api.Models;
 
-public record CreateAccountRequest(Guid customerId, string accountType, decimal initialCredit);
+public record CreateAccountRequest(Guid CustomerId, string AccountType, decimal InitialCredit);
 
 public class CreateAccountRequestValidator : AbstractValidator<CreateAccountRequest>
 {
     public CreateAccountRequestValidator()
     {
-        RuleFor(x => x.customerId).NotEmpty();
-        RuleFor(x => x.accountType).NotEmpty();
-        RuleFor(x => x.initialCredit).NotEmpty().GreaterThan(0);
+        RuleFor(x => x.CustomerId).NotEmpty();
+        RuleFor(x => x.AccountType).NotEmpty();
+        RuleFor(x => x.InitialCredit).NotEmpty().GreaterThan(0);
     }
 }
 

@@ -1,34 +1,32 @@
-﻿using Accounts.Domain.Exceptions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Accounts.Domain.Base;
+using Accounts.Domain.DomainEvents;
+using Accounts.Domain.Exceptions;
 
 namespace Accounts.Domain.Entities;
-public class Account
+public class Account: AggregateRoot
 {
-    public int Id { get; private set; }
     public required string Name { get; set; }
     public required string Description { get; set; }
     public decimal Balance { get; private set; }
     public DateTime CreatedAt { get; private set; }
     public DateTime UpdatedAt { get; private set; }
     public Guid CustomerId { get; private set; }
-    public bool IsDeleted { get; private set; }
+    public bool IsClosed { get; private set; }
     public List<Transaction> Transactions { get; private set; } = new List<Transaction>();
+
 
     public Account(Guid customerId, string name, string description, decimal initialCredit)
     {
+        Id = Guid.NewGuid();
         CustomerId = customerId;
         Name = name;
         Description = description;
         Balance = initialCredit;
         CreatedAt = DateTime.UtcNow;
         UpdatedAt = DateTime.UtcNow;
-
+        AddDomainEvent(new AccountOpenedEvent(Id));
     }
-    
+
     public void Credit(decimal amount, string reference)
     {
         Balance += amount;
@@ -56,7 +54,6 @@ public class Account
             Amount = amount
         });
     }
-
     public void Update(string name, string description)
     {
         Name = name;
@@ -64,9 +61,10 @@ public class Account
         UpdatedAt = DateTime.UtcNow;
     }
 
-    public void Delete()
+    public void Close()
     {
-        IsDeleted = true;
+        IsClosed = true;
         UpdatedAt = DateTime.UtcNow;
+        AddDomainEvent(new AccountClosedEvent(Id));
     }
 }

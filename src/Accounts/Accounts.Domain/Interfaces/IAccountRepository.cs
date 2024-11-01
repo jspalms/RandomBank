@@ -1,7 +1,7 @@
 ﻿using Accounts.Domain.Entities;
 
 namespace Accounts.Domain.Interfaces;
-internal interface IAccountRepository
+public interface IAccountRepository
 {
     Task<Account> GetAsync(int id);
     Task<Account> GetByCustomerIdAsync(Guid customerId);
