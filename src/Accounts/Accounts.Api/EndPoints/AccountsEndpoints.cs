@@ -42,18 +42,18 @@ public static class AccountsEndpoints
         AbstractValidator<CreateAccountRequest> createAccountRequestValidator,
         IMediator mediator)
     {
-        var validationResult = createAccountRequestValidator.Validate(createAccountRequest);
+        var validationResult = await createAccountRequestValidator.ValidateAsync(createAccountRequest);
 
         if (!validationResult.IsValid)
         {
-            return TypedResults.BadRequest(validationResult.Errors);
+            return TypedResults.BadRequest(validationResult.ToString());
         }
 
         var command = new CreateAccountCommand(createAccountRequest.CustomerId, createAccountRequest.AccountType, createAccountRequest.InitialCredit);
 
         var result = await mediator.Send(command);
 
-        return TypedResults.Created($"/account/{Guid.NewGuid()}", new { });
+        return TypedResults.Created($"/{result}");
     }
 
     private static object UpdateAccount(int id, object product)

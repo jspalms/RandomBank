@@ -18,6 +18,7 @@ public class Account: AggregateRoot
     public Account(Guid customerId, string name, string description, decimal initialCredit)
     {
         Id = Guid.NewGuid();
+        Version = 0;
         CustomerId = customerId;
         Name = name;
         Description = description;
