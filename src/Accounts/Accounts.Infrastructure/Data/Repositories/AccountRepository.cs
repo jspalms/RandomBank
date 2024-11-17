@@ -5,31 +5,7 @@ namespace Accounts.Infrastructure.Data.Repositories;
 
 
 
-public class AccountRepository : IAccountRepository
+public class AccountRepository(ApplicationDbContext dbContext) : BaseRepository<Account>(dbContext), IAccountRepository
 {
-    public Task AddAsync(Account account)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task DeleteAsync(Account account)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<Account> GetAsync(int id)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<Account> GetByCustomerIdAsync(Guid customerId)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task UpdateAsync(Account account)
-    {
-        throw new NotImplementedException();
-    }
 }
 

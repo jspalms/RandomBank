@@ -1,6 +1,8 @@
 ﻿namespace Accounts.Infrastructure.Extenstions;
 
 using Data;
+using Data.Repositories;
+using Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -10,10 +12,8 @@ public static class ServiceCollectionExtensions
     {
         services.AddDbContext<ApplicationDbContext>(options =>
             options.UseNpgsql(connectionString));
-
-        // Register other infrastructure services, e.g., repositories
-        // services.AddScoped<IRepository, Repository>();
-
+        services.AddScoped<IAccountRepository, AccountRepository>();
+        
         return services;
     }
 }

@@ -3,10 +3,10 @@
 
 ## Things to add
 
-1. Complete the README.md file
-2. Complete the end to end process for each API
-3. Decide what db to use if any 
-4. Add Kafka Debezium for CDC
+1. Update Repositories 
+2. Unit of work pattern?
+3. Domain events and integration events - split them out
+
 4. Containerise the application
 
 
@@ -17,6 +17,8 @@
 - MassTransit for transactional outbox
 - Ef core for db or Marten db for event sourcing
 - Api gateway
+
+Make a temporal version, Make an event sourced system
 
 
 # DDD Notes

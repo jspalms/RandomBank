@@ -3,9 +3,12 @@ using Accounts.Domain.DomainEvents;
 using Accounts.Domain.Exceptions;
 
 namespace Accounts.Domain.Entities;
+
+using System.Diagnostics.CodeAnalysis;
+
 public class Account: AggregateRoot
 {
-    public required string Name { get; set; }
+    public required AccountType AccountType { get; set; }
     public required string Description { get; set; }
     public decimal Balance { get; private set; }
     public DateTime CreatedAt { get; private set; }
@@ -13,14 +16,14 @@ public class Account: AggregateRoot
     public Guid CustomerId { get; private set; }
     public bool IsClosed { get; private set; }
     public List<Transaction> Transactions { get; private set; } = new List<Transaction>();
-
-
-    public Account(Guid customerId, string name, string description, decimal initialCredit)
+    
+    [SetsRequiredMembers]
+    public Account(Guid customerId, AccountType accountType, string description, decimal initialCredit)
     {
         Id = Guid.NewGuid();
         Version = 0;
         CustomerId = customerId;
-        Name = name;
+        AccountType = accountType;
         Description = description;
         Balance = initialCredit;
         CreatedAt = DateTime.UtcNow;
@@ -55,9 +58,8 @@ public class Account: AggregateRoot
             Amount = amount
         });
     }
-    public void Update(string name, string description)
+    public void Update(string description)
     {
-        Name = name;
         Description = description;
         UpdatedAt = DateTime.UtcNow;
     }
