@@ -11,17 +11,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Accounts.Api", "src\Account
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Accounts.Domain", "src\Accounts\Accounts.Domain\Accounts.Domain.csproj", "{20E09708-3313-4C56-8062-F7BA85145B8F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Customers.Api", "src\Customers\Customer.Api\Customers.Api.csproj", "{65226621-8F77-4E46-9E35-499D4CB94B5A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Identities.Api", "src\Customers\Customer.Api\Identities.Api.csproj", "{65226621-8F77-4E46-9E35-499D4CB94B5A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Customers.Domain", "src\Customers\Customers.Domain\Customers.Domain.csproj", "{B7FD2E5B-6163-4E8B-AC0B-B05D286FC5AE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Identities.Domain", "src\Customers\Identities.Domain\Identities.Domain.csproj", "{B7FD2E5B-6163-4E8B-AC0B-B05D286FC5AE}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Accounts.Application", "src\Accounts\Accounts.Application\Accounts.Application.csproj", "{F5EB95E0-676E-4616-9C9E-A5B8C21D1A56}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Customers", "Customers", "{E4303D8A-7C01-46AD-817D-AF28607D5C2F}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Identities", "Identities", "{E4303D8A-7C01-46AD-817D-AF28607D5C2F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Customers.Application", "src\Customers\Customers.Application\Customers.Application.csproj", "{5271EB31-86F3-430B-AC0C-AD3E520298F1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Identities.Application", "src\Customers\Identities.Application\Identities.Application.csproj", "{5271EB31-86F3-430B-AC0C-AD3E520298F1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Customers.Infrastructure", "src\Customers\Customers.Infrastructure\Customers.Infrastructure.csproj", "{B5B25511-1685-484E-9A4D-B19DA0AB43D7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Identities.Infrastructure", "src\Customers\Identities.Infrastructure\Identities.Infrastructure.csproj", "{B5B25511-1685-484E-9A4D-B19DA0AB43D7}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Accounts.Infrastructure", "src\Accounts\Accounts.Infrastructure\Accounts.Infrastructure.csproj", "{FCE52509-E298-4E6E-B104-C182F3098E9E}"
 EndProject

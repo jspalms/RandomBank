@@ -2,7 +2,7 @@ using System.Configuration;
 using Accounts.Api.Extensions;
 using FluentValidation;
 using System.Reflection;
-using Accounts.Infrastructure.Extenstions;
+using Accounts.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 

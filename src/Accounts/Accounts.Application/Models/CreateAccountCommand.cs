@@ -1,5 +1,5 @@
-﻿using MediatR;
+﻿namespace Accounts.Application.Models;
 
-namespace Accounts.Api.Models;
+using MediatR;
 
-public record CreateAccountCommand(Guid CustomerId, string AccountType, string Description, decimal InitialCredit): IRequest<Guid>;
+public record CreateAccountCommand(Guid AggregateId, Guid CustomerId, string AccountType, string Description, decimal InitialCredit): IRequest<Guid>;

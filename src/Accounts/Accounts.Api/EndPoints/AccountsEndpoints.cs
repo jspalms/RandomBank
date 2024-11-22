@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace Accounts.Api.Extensions;
 
+using Application.Models;
+
 public static class AccountsEndpoints
 {
     public static void RegisterAccountEndpoints(this IEndpointRouteBuilder builder)
@@ -49,7 +51,7 @@ public static class AccountsEndpoints
             return TypedResults.BadRequest(validationResult.ToString());
         }
 
-        var command = new CreateAccountCommand(createAccountRequest.CustomerId, createAccountRequest.AccountType, createAccountRequest.InitialCredit);
+        var command = new CreateAccountCommand(Guid.NewGuid(), createAccountRequest.CustomerId, createAccountRequest.AccountType, createAccountRequest.description, createAccountRequest.InitialCredit);
 
         var result = await mediator.Send(command);
 

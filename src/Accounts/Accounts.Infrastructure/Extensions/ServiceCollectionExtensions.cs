@@ -1,4 +1,4 @@
-﻿namespace Accounts.Infrastructure.Extenstions;
+﻿namespace Accounts.Infrastructure.Extensions;
 
 using Data;
 using Data.Repositories;

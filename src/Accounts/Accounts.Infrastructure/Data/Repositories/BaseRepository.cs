@@ -1,24 +1,33 @@
 ﻿namespace Accounts.Infrastructure.Data.Repositories;
 
 using Domain.Interfaces;
+using Extensions;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : class, IAggregateRoot
 {
-    public BaseRepository(ApplicationDbContext dbContext)
+    private readonly ApplicationDbContext _dbContext;
+    
+    private readonly IMediator _mediator;
+    
+    protected BaseRepository(ApplicationDbContext dbContext, IMediator mediator)
     {
         _dbContext = dbContext;
+        _mediator = mediator;
     }
-
-    private readonly ApplicationDbContext _dbContext;
-
+    
+    public Task<bool> ExistsAsync(Guid id)
+    {
+        return _dbContext.Set<TEntity>().AnyAsync(e => e.Id == id);
+    }
 
     public async Task<TEntity?> GetByIdAsync(Guid id)
     {
         return await _dbContext.Set<TEntity>().FindAsync(id);
     }
 
-    public async Task<List<TEntity?>> GetAllAsync()
+    public async Task<List<TEntity>> GetAllAsync()
     {
         return await _dbContext.Set<TEntity>().ToListAsync();
     }
@@ -28,11 +37,6 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
         await _dbContext.Set<TEntity>().AddAsync(entity);
     }
 
-    public async Task UpdateAsync(TEntity entity)
-    {
-       await _dbContext.Set<TEntity>().ExecuteUpdateAsync(entity);
-    }
-
     public void DeleteAsync(TEntity entity)
     {
         _dbContext.Set<TEntity>().Remove(entity);
@@ -40,7 +44,7 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
 
     public async Task SaveChangesAsync()
     {
-        // need to emit the domain events here
+        await _mediator.DispatchDomainEvents(_dbContext);
         await _dbContext.SaveChangesAsync();
     }
 }
