@@ -17,14 +17,11 @@ public class CreateAccountCommandHandler(IAccountRepository accountRepository): 
             throw new AggregateAlreadyExistsException(command.AggregateId);
         }
         
-        // Create the account
-        
         var account = new Account(command.CustomerId, Enum.Parse<AccountType>(command.AccountType), command.Description, command.InitialCredit);
-        await accountRepository.AddAsync(account);
-        await accountRepository.SaveChangesAsync();
         
-        // Save the account also emit any domain events that are happening and clear the account - check the version number
-
+        await accountRepository.AddAsync(account);
+        
+        await accountRepository.SaveChangesAsync();
         return account.Id;
 
     }
