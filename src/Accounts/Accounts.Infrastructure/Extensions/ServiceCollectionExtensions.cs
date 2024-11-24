@@ -13,7 +13,9 @@ public static class ServiceCollectionExtensions
         services.AddDbContext<ApplicationDbContext>(options =>
             options.UseNpgsql(connectionString));
         services.AddScoped<IAccountRepository, AccountRepository>();
-        
+
+
+
         return services;
     }
 }

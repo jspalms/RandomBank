@@ -1,5 +1,7 @@
-﻿namespace Accounts.Domain.DomainEvents;
-internal record AccountOpenedEvent : IDomainEvent
+﻿using MediatR;
+
+namespace Accounts.Domain.DomainEvents;
+public record AccountOpenedEvent : IDomainEvent, INotification
 {
     public Guid EventId { get; init; } = Guid.NewGuid();
     public DateTime CreatedOn { get; init; } = DateTime.UtcNow;

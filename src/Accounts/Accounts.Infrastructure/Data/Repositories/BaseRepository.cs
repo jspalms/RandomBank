@@ -44,7 +44,10 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
 
     public async Task SaveChangesAsync()
     {
-        await _mediator.DispatchDomainEvents(_dbContext);
         await _dbContext.SaveChangesAsync();
+
+        //dispatching domain events after saving changes - ensures that the events are not dispatched if the database operation fails
+        //trade off - means that the changes to other aggregates are not transactional - need to deal with eventual consistency
+        await _mediator.DispatchDomainEvents(_dbContext);
     }
 }
