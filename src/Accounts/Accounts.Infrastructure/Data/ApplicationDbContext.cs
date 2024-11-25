@@ -1,6 +1,7 @@
 ﻿namespace Accounts.Infrastructure.Data;
 
 using Domain.Entities;
+using MassTransit;
 using Microsoft.EntityFrameworkCore;
 
 public class ApplicationDbContext: DbContext
@@ -14,5 +15,10 @@ public class ApplicationDbContext: DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
+
+        //Mass Transit
+        modelBuilder.AddInboxStateEntity();
+        modelBuilder.AddOutboxMessageEntity();
+        modelBuilder.AddOutboxStateEntity();
     }
 }

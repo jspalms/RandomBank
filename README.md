@@ -7,16 +7,14 @@
 3. Add a transactional outbox for committing integration events
 4. Add kafka to produce and consume events
 
-
-4. Containerize the application
-5. Add authorization using some IdAAS
+a. Containerize the application
+b. Add authorization using some IdAAS
 
 ### Potential technologies to look into
 
 - MassTransit for transactional outbox
 - Api gateway
 - Open telemetry for logging through seq (or similar)
-
 
 # DDD Notes
 
@@ -57,6 +55,8 @@ The gubbins layer - this is where the business happens. Third party services sho
 
 ## Repositories
 
+arguments that EF is already an abstraction over database connections and repository pattern is redundant. But Its a nice abstraction IMO (and its all I've ever used)
+
 ### Domain Layer
 
 Business logic using business language
@@ -67,8 +67,14 @@ How do domain events get sent between aggregates - is a transactional outbox nee
 
 What should the scope of a bounded context / aggregate be
 
+if you're going to outbox integration events does it make sense to outbox domain events too?
+
+I want my integration events to be transactional but they are raised in response to domain events which I've specifically raised after the aggregate is saved
+
+What should the scope of a bounded context / aggregate be
+
 # Future projects
 
-- Event sourcing version 
+- Event sourcing version
 - Temporal version
-- 
+-

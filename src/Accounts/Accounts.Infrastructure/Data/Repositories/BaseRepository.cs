@@ -2,6 +2,7 @@
 
 using Domain.Interfaces;
 using Extensions;
+using MassTransit;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,7 +12,11 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
     
     private readonly IMediator _mediator;
     
-    protected BaseRepository(ApplicationDbContext dbContext, IMediator mediator)
+    protected BaseRepository(
+        ApplicationDbContext dbContext, 
+        IMediator mediator, 
+        IPublishEndpoint publishEndpoint
+        )
     {
         _dbContext = dbContext;
         _mediator = mediator;
@@ -44,6 +49,7 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
 
     public async Task SaveChangesAsync()
     {
+
         await _dbContext.SaveChangesAsync();
 
         //dispatching domain events after saving changes - ensures that the events are not dispatched if the database operation fails
