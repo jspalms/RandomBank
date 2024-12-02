@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Accounts.Application\Accounts.Application.csproj" />
     <ProjectReference Include="..\Accounts.Domain\Accounts.Domain.csproj" />
   </ItemGroup>
 
@@ -19,6 +20,7 @@
     <PackageReference Include="EntityFramework" Version="6.5.1" />
     <PackageReference Include="MassTransit" Version="8.3.2" />
     <PackageReference Include="MassTransit.EntityFrameworkCore" Version="8.3.2" />
+    <PackageReference Include="MassTransit.Kafka" Version="8.3.2" />
     <PackageReference Include="MediatR" Version="12.4.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.0" />
