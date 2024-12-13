@@ -11,6 +11,18 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      
+  postgres-init:
+    image: mcr.microsoft.com/dotnet/aspnet:6.0
+    container_name: postgres-init
+    depends_on:
+      - postgres
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    entrypoint: [ "dotnet", "ef", "database", "update" ]
+    volumes:
+      - .:/app
+    working_dir: /app
         
   broker:
     image: apache/kafka:latest
@@ -34,6 +46,18 @@ services:
       KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
       KAFKA_LOG_DIRS: /tmp/kraft-combined-logs
       CLUSTER_ID: MkU3OEVBNTcwNTJENDM2Qk
+  
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    container_name: kafka-ui
+    ports:
+      - "8080:8080"
+    environment:
+      KAFKA_CLUSTERS_0_NAME: local
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: broker:29092
+    depends_on:
+      - broker
+  
 volumes:
   postgres_data:
     
