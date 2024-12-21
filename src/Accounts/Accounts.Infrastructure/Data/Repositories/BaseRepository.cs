@@ -5,6 +5,7 @@ using Extensions;
 using MassTransit;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using SharedKernel.Domain.Interfaces;
 
 public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : class, IAggregateRoot
 {

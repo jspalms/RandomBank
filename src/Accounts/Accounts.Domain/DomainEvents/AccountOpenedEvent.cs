@@ -1,6 +1,8 @@
-﻿using MediatR;
+﻿namespace Accounts.Domain.DomainEvents;
 
-namespace Accounts.Domain.DomainEvents;
+using MediatR;
+using SharedKernel.Domain.Interfaces;
+
 public record AccountOpenedEvent : IDomainEvent, INotification
 {
     public Guid EventId { get; init; } = Guid.NewGuid();

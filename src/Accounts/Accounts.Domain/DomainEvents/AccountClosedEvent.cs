@@ -1,4 +1,7 @@
 ﻿namespace Accounts.Domain.DomainEvents;
+
+using SharedKernel.Domain.Interfaces;
+
 public record AccountClosedEvent : IDomainEvent
 {
     public Guid EventId { get; init; } = Guid.NewGuid();

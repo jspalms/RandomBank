@@ -1,46 +1,46 @@
-﻿namespace Accounts.Api.EndPoints;
+﻿namespace Identities.Api.EndPoints;
 
-using Accounts.Api.Models;
-using Accounts.Application.Models;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Models;
 
-public static class AccountsEndpoints
+public static class IdentitiesEndpoints
 {
-    public static void RegisterAccountEndpoints(this IEndpointRouteBuilder builder)
+    public static void RegisterIdentitiesEndpoints(this IEndpointRouteBuilder builder)
     {
         var accounts = builder.MapGroup("/accounts").WithTags("Accounts Api").WithOpenApi();
 
-        accounts.MapGet("", GetAccounts)
+        accounts.MapGet("", GetIdentities)
             .WithName("GetAccounts");
 
-        accounts.MapGet("/{id}", GetAccount)
+        accounts.MapGet("/{id}", GetIdentity)
             .WithName("GetAccount");
 
-        accounts.MapPost("", CreateAccount)
+        accounts.MapPost("", CreateIdentity)
             .WithName("CreateAccount");
 
-        accounts.MapPut("/{id}", UpdateAccount)
+        accounts.MapPut("/{id}", UpdateIdentity)
             .WithName("UpdateAccount");
 
-        accounts.MapDelete("/{id}", DeleteAccount)
+        accounts.MapDelete("/{id}", DeleteIdentity)
             .WithName("DeleteAccount");
     }
+    
 
-    private static object[] GetAccounts()
+    private static object[] GetIdentities()
     {
         return new[] { new { Id = 1, Name = "Account 1" }, new { Id = 2, Name = "Account 2" } };
     }
 
-    private static object GetAccount(int id)
+    private static object Getidentity(int id)
     {
         return new { Id = id, Name = $"Product {id}" };
     }
 
-    private static async Task<Results<Created, BadRequest<string>>> CreateAccount(
-        CreateAccountRequest createAccountRequest, 
-        AbstractValidator<CreateAccountRequest> createAccountRequestValidator,
+    private static async Task<Results<Created, BadRequest<string>>> CreateIdentity(
+        CreateIdentityRequest createAccountRequest, 
+        AbstractValidator<CreateIdentityRequest> createAccountRequestValidator,
         IMediator mediator)
     {
         var validationResult = await createAccountRequestValidator.ValidateAsync(createAccountRequest);
@@ -57,13 +57,14 @@ public static class AccountsEndpoints
         return TypedResults.Created($"/{result}");
     }
 
-    private static object UpdateAccount(int id, object product)
+    private static object pdateIdentity(int id, object product)
     {
         return Results.Ok(product);
     }
 
-    private static object DeleteAccount(int id)
+    private static object DeleteIdentity(int id)
     {
         return Results.NoContent();
     }
+    
 }

@@ -1,5 +1,7 @@
 ﻿namespace Accounts.Domain.Interfaces;
 
+using SharedKernel.Domain.Interfaces;
+
 public interface IBaseRepository<TEntity> where TEntity : IAggregateRoot
 {
     Task<bool> ExistsAsync(Guid id);

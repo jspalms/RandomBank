@@ -2,9 +2,9 @@
 
 ## Application overview: 
 
-Its a dummy bank ledger which can be used to open and interact with a bank account 
+Its a dummy bank system which can be to register as a user then open and interact with a bank account.
 
-Admin can add and edit products i.e. a kind of bank account 
+There are two disparate systems (a) Users system (b) Accounts system
 
 User can sign-up and edit their details
 
@@ -13,6 +13,8 @@ User can open / close an account and deposit / withdraw funds
 There is a job which runs on a schedule to apply interest to the account
 
 The user is notified when an action happens on the account
+
+Admin can add and edit products i.e. a kind of bank account 
 
 ## Things to add
 

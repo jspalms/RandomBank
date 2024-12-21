@@ -1,4 +1,6 @@
-﻿namespace Accounts.Domain.Base;
+﻿namespace SharedKernel.Domain;
+
+using Interfaces;
 
 public abstract class AggregateRoot: IAggregateRoot
 {

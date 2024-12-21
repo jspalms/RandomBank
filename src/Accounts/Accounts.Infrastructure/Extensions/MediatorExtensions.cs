@@ -1,8 +1,8 @@
 ﻿namespace Accounts.Infrastructure.Extensions;
 
 using Data;
-using Domain.Base;
 using MediatR;
+using SharedKernel.Domain;
 
 public static class MediatorExtensions
 {

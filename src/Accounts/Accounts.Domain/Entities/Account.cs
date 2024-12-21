@@ -1,10 +1,9 @@
-﻿using Accounts.Domain.Base;
+﻿namespace Accounts.Domain.Entities;
+
 using Accounts.Domain.DomainEvents;
 using Accounts.Domain.Exceptions;
-
-namespace Accounts.Domain.Entities;
-
 using System.Diagnostics.CodeAnalysis;
+using SharedKernel.Domain;
 
 public class Account: AggregateRoot
 {
