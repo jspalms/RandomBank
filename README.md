@@ -47,6 +47,12 @@ Each event can have multiple handlers, each handler should be responsible for a 
 There is a question raised over consistency between aggregates and systems when using events, if there is a failure between the aggregate state being saved and the event being emmited then the system will be out of sync.
 This can be mitigated by using a transactional outbox but I'm unsure if this overhead is necessary for domain events or if its more of a consideration for integration events.
 
+## Bounded Context
+
+ A bounded context is a logical boundary around a specific part of your domain model, defining a consistent language and rules for that domain. Each bounded context focuses on a specific business capability, like "Accounts" or "Identities," ensuring clarity and separation of concerns.
+
+ Each bounded context typically aligns to a single microservice, encapsulating its domain logic, database, and APIs.
+
 ## Value Objects
 
 These are where their properties is what defines them, e.g. an address wouldn't have an Guid ID associated because its the combination of its properties which gives it uniqueness. They are immutable
