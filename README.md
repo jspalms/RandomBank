@@ -22,6 +22,7 @@ Admin can add and edit products i.e. a kind of bank account
 2. Add an optimistic locking mechanism to the account aggregate
 3. Add a transactional outbox for committing integration events
 4. Add kafka to produce and consume events
+5. Add certificate for HTTPS
 
 a. Containerize the application
 b. Add authorization using some IdAAS

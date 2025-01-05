@@ -2,7 +2,6 @@
 
 using Domain.Interfaces;
 using Extensions;
-using MassTransit;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using SharedKernel.Domain.Interfaces;
@@ -15,8 +14,7 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
     
     protected BaseRepository(
         ApplicationDbContext dbContext, 
-        IMediator mediator, 
-        IPublishEndpoint publishEndpoint
+        IMediator mediator
         )
     {
         _dbContext = dbContext;
@@ -50,6 +48,13 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
 
     public async Task SaveChangesAsync()
     {
+        foreach (var entry in _dbContext.ChangeTracker.Entries<IAggregateRoot>())
+        {
+            if (entry.State == EntityState.Modified)
+            {
+                entry.Entity.IncrementVersion();
+            }
+        }
 
         await _dbContext.SaveChangesAsync();
 

@@ -2,11 +2,11 @@
 
 using Interfaces;
 
-public abstract class AggregateRoot: IAggregateRoot
+public abstract class AggregateRootBase: IAggregateRoot
 {
     public Guid Id { get; protected set; }
-    protected int Version { get; set; }
-    protected List<IDomainEvent> _domainEvents { get; } = new List<IDomainEvent>();
+    private int VersionNumber { get; set; }
+    private List<IDomainEvent> _domainEvents { get; } = [];
     public IReadOnlyList<IDomainEvent> DomainEvents => _domainEvents.AsReadOnly();
     protected void AddDomainEvent(IDomainEvent domainEvent)
     {
@@ -16,5 +16,8 @@ public abstract class AggregateRoot: IAggregateRoot
     {
         _domainEvents.Clear();
     }
-
+    public void IncrementVersion()
+    {
+        VersionNumber++;
+    }
 }

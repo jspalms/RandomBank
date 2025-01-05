@@ -30,6 +30,10 @@ What is the change that we're proposing and/or doing?
 ## Consequences
 
 What becomes easier or more difficult to do because of this change?
+
+## Technical explanation
+
+More detailed technical information about the proposed solution (if required)
 ```
 
 ADRs should focus on a single topic and can be as long or as short as required to put across the required decision. I'm unsure on the level of decision which warrants being included in an ADR but I think having a rationale provided for most things is better than having nothing. No-one would ever complain about being given too much of an explanation right?

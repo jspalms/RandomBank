@@ -20,3 +20,5 @@ Can start in dev mode which adds default configuration using the command start-d
 Realms in KeyCloak represent environments i.e. Prod, Stg, Dev
 
 Clients represent applications
+
+http://keycloakhost:keycloakport/realms/{realm}/.well-known/openid-configuration

@@ -3,9 +3,10 @@
 using Accounts.Domain.DomainEvents;
 using Accounts.Domain.Exceptions;
 using System.Diagnostics.CodeAnalysis;
+using Enums;
 using SharedKernel.Domain;
 
-public class Account: AggregateRoot
+public class Account: AggregateRootBase
 {
     public required AccountType AccountType { get; set; }
     public required string Description { get; set; }
@@ -14,20 +15,20 @@ public class Account: AggregateRoot
     public DateTime UpdatedAt { get; private set; }
     public Guid CustomerId { get; private set; }
     public bool IsClosed { get; private set; }
-    public List<Transaction> Transactions { get; private set; } = new List<Transaction>();
+    public List<Transaction> Transactions { get; private set; } = [];
+    
     
     [SetsRequiredMembers]
-    public Account(Guid customerId, AccountType accountType, string description, decimal initialCredit)
+    public Account(Guid customerId, AccountType accountType, string description, decimal balance)
     {
         Id = Guid.NewGuid();
-        Version = 0;
         CustomerId = customerId;
         AccountType = accountType;
         Description = description;
-        Balance = initialCredit;
+        Balance = balance;
         CreatedAt = DateTime.UtcNow;
         UpdatedAt = DateTime.UtcNow;
-        AddDomainEvent(new AccountOpenedEvent(Id));
+        AddDomainEvent(new AccountOpenedEvent{AggregateId = Id});
     }
 
     public void Credit(decimal amount, string reference)
@@ -40,6 +41,7 @@ public class Account: AggregateRoot
             Reference = reference,
             Amount = amount
         });
+        AddDomainEvent(new TransactionAddedEvent{AggregateId = Id});
     }
 
     public void Debit(decimal amount, string reference)
@@ -56,6 +58,7 @@ public class Account: AggregateRoot
             Reference = reference,
             Amount = amount
         });
+        AddDomainEvent(new TransactionAddedEvent{AggregateId = Id});
     }
     public void Update(string description)
     {
@@ -67,6 +70,6 @@ public class Account: AggregateRoot
     {
         IsClosed = true;
         UpdatedAt = DateTime.UtcNow;
-        AddDomainEvent(new AccountClosedEvent(Id));
+        AddDomainEvent(new AccountClosedEvent{AggregateId = Id});
     }
 }

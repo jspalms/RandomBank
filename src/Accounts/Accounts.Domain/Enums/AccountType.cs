@@ -1,4 +1,4 @@
-﻿namespace Accounts.Domain.Entities;
+﻿namespace Accounts.Domain.Enums;
 
 public enum AccountType
 {

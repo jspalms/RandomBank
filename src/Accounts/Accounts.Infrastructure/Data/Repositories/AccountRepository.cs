@@ -6,7 +6,7 @@ namespace Accounts.Infrastructure.Data.Repositories;
 using MassTransit;
 using MediatR;
 
-public class AccountRepository(ApplicationDbContext dbContext, IMediator mediator, IPublishEndpoint publisherEndpoint) : BaseRepository<Account>(dbContext, mediator, publisherEndpoint), IAccountRepository
+public class AccountRepository(ApplicationDbContext dbContext, IMediator mediator) : BaseRepository<Account>(dbContext, mediator), IAccountRepository
 {
 }
 

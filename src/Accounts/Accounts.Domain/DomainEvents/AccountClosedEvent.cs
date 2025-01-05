@@ -1,14 +1,9 @@
 ﻿namespace Accounts.Domain.DomainEvents;
 
+using SharedKernel.Domain;
 using SharedKernel.Domain.Interfaces;
 
-public record AccountClosedEvent : IDomainEvent
+public record AccountClosedEvent : DomainEventBase, IDomainEvent
 {
-    public Guid EventId { get; init; } = Guid.NewGuid();
-    public DateTime CreatedOn { get; init; } = DateTime.UtcNow;
-    public Guid AggregateId { get; init; }
-    public AccountClosedEvent(Guid aggregateId)
-    {
-        AggregateId = aggregateId;
-    }
+
 }

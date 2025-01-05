@@ -1,6 +1,7 @@
 ﻿namespace Accounts.Application.Handlers.CommandHandlers;
 
 using Domain.Entities;
+using Domain.Enums;
 using Domain.Interfaces;
 using Exceptions;
 using MediatR;

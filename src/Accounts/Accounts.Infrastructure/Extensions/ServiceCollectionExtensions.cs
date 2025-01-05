@@ -17,23 +17,9 @@ public static class ServiceCollectionExtensions
         services.AddDbContext<ApplicationDbContext>(options =>
             options.UseNpgsql(connectionString));
         services.AddScoped<IAccountRepository, AccountRepository>();
-        services.AddScoped<IEventPublisher<AccountOpenedIntegrationEvent>, EventPublisher<AccountOpenedIntegrationEvent>>();
-
-        services.AddMassTransit(x =>
-        {
-            x.AddRider(rider =>
-            {
-                rider.AddProducer<AccountOpenedIntegrationEvent>("topic-name");
-                rider.UsingKafka((context, k) => { k.Host("localhost:9092"); });
-            });
-            x.AddEntityFrameworkOutbox<ApplicationDbContext>(o =>
-            {
-                o.QueryDelay = TimeSpan.FromSeconds(1);
-                o.UsePostgres();
-                o.UseBusOutbox();
-            });
-        });
-
+        // services.AddScoped<IEventPublisher<AccountOpenedIntegrationEvent>, EventPublisher<AccountOpenedIntegrationEvent>>();
+        
+        
         return services;
     }
 }

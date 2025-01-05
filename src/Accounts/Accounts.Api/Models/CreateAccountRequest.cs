@@ -3,6 +3,7 @@
 namespace Accounts.Api.Models;
 
 using Domain.Entities;
+using Domain.Enums;
 
 public record CreateAccountRequest(Guid CustomerId, string AccountType, string description, decimal InitialCredit);
 

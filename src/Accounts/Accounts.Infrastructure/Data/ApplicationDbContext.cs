@@ -17,8 +17,8 @@ public class ApplicationDbContext: DbContext
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
 
         //Mass Transit outbox
-        modelBuilder.AddInboxStateEntity();
-        modelBuilder.AddOutboxMessageEntity();
-        modelBuilder.AddOutboxStateEntity();
+        // modelBuilder.AddInboxStateEntity();
+        // modelBuilder.AddOutboxMessageEntity();
+        // modelBuilder.AddOutboxStateEntity();
     }
 }
