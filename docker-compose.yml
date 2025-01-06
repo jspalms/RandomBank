@@ -12,17 +12,22 @@ services:
       - postgres_data:/var/lib/postgresql/data
       
   postgres-init:
-    image: mcr.microsoft.com/dotnet/aspnet:6.0
+    image: mcr.microsoft.com/dotnet/sdk:8.0
     container_name: postgres-init
     depends_on:
       - postgres
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-    entrypoint: [ "dotnet", "ef", "database", "update" ]
-    volumes:
-      - .:/app
     working_dir: /app
-        
+    volumes:
+      - ./Accounts.Infrastructure:/app
+    entrypoint: |
+      bash -c "
+      dotnet tool install --global dotnet-ef &&
+      export PATH=\$PATH:/root/.dotnet/tools &&
+      dotnet ef database update --connection 'Host=postgres_container;Database=mydatabase;Username=admin;Password=password'
+      "
+            
   broker:
     image: apache/kafka:latest
     hostname: broker
