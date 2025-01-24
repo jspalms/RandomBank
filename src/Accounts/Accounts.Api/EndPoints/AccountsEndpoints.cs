@@ -40,11 +40,10 @@ public static class AccountsEndpoints
 
     private static async Task<Results<Created, BadRequest<string>>> CreateAccount(
         CreateAccountRequest createAccountRequest, 
-        AbstractValidator<CreateAccountRequest> createAccountRequestValidator,
+        IValidator<CreateAccountRequest> createAccountRequestValidator,
         IMediator mediator)
     {
         var validationResult = await createAccountRequestValidator.ValidateAsync(createAccountRequest);
-
         if (!validationResult.IsValid)
         {
             return TypedResults.BadRequest(validationResult.ToString());

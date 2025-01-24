@@ -1,14 +1,15 @@
 using System.Configuration;
-using FluentValidation;
 using System.Reflection;
+using FluentValidation;
 using Accounts.Api.EndPoints;
+using Accounts.Infrastructure.Data;
 using Accounts.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<Program>());
 builder.Services.AddInfrastructureServices(builder.Configuration.GetConnectionString("PostgresConnection") ?? throw new ConfigurationErrorsException("Missing postgres connection string"));
@@ -16,7 +17,6 @@ builder.Services.AddInfrastructureServices(builder.Configuration.GetConnectionSt
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-
 
 
 if (app.Environment.IsDevelopment())
@@ -27,7 +27,7 @@ if (app.Environment.IsDevelopment())
     using var scope = app.Services.CreateScope();
 
     var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    dbContext.Database.Migrate();
+    dbContext.Database.EnsureCreated();
 
 }
 
