@@ -2,22 +2,20 @@
 
 using Data;
 using Data.Repositories;
-using Domain.IntegrationEvents;
 using Domain.Interfaces;
-using Events;
-using MassTransit;
-using MassTransit.KafkaIntegration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Configuration;
+using System.Configuration;
+
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, string connectionString)
+    public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, Microsoft.Extensions.Configuration.ConfigurationManager configuration)
     {
         services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseNpgsql(connectionString));
+            options.UseNpgsql(configuration.GetConnectionString("PostgresConnection") ?? throw new ConfigurationErrorsException("Missing postgres connection string")));
         services.AddScoped<IAccountRepository, AccountRepository>();
-        // services.AddScoped<IEventPublisher<AccountOpenedIntegrationEvent>, EventPublisher<AccountOpenedIntegrationEvent>>();
         
         
         return services;

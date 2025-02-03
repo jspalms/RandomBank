@@ -11,6 +11,7 @@ public class CreateAccountCommandHandler(IAccountRepository accountRepository) :
 {
     public async Task<Guid> Handle(CreateAccountCommand command, CancellationToken cancellationToken)
     {
+        //is this normally how a check is done?
         if (await accountRepository.ExistsAsync(command.AggregateId))
         {
             throw new AggregateAlreadyExistsException(command.AggregateId);
@@ -21,6 +22,7 @@ public class CreateAccountCommandHandler(IAccountRepository accountRepository) :
         await accountRepository.AddAsync(account);
 
         await accountRepository.SaveChangesAsync();
+
         return account.Id;
     }
 }

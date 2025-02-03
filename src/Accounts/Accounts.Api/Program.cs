@@ -12,7 +12,7 @@ builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<Program>());
-builder.Services.AddInfrastructureServices(builder.Configuration.GetConnectionString("PostgresConnection") ?? throw new ConfigurationErrorsException("Missing postgres connection string"));
+builder.Services.AddInfrastructureServices(builder.Configuration);
 
 var app = builder.Build();
 

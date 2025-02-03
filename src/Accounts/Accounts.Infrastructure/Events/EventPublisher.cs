@@ -1,24 +1,44 @@
 ﻿namespace Accounts.Infrastructure.Events;
 
-using Domain.IntegrationEvents;
-using Domain.Interfaces;
-using MassTransit;
+using MediatR;
+using Microsoft.Extensions.Logging;
+using System.Text.Json;
 
-public class EventPublisher<T>: IEventPublisher<T> where T : class
+public class EventPublisher : IEventPublisher
 {
-    private readonly ITopicProducer<AccountOpenedIntegrationEvent> _topicProducer;
-    
-    public EventPublisher(ITopicProducer<AccountOpenedIntegrationEvent> topicProducer)
+    private readonly IMediator _mediator;
+    private readonly ILogger<EventPublisher> _logger;
+
+    public EventPublisher(IMediator mediator, ILogger<EventPublisher> logger)
     {
-        _topicProducer = topicProducer;
+        _mediator = mediator;
+        _logger = logger;
     }
-    
-    public Task PublishAsync(T message)
+
+    public async Task PublishAsync(string eventType, string payload, CancellationToken cancellationToken)
     {
-        return message switch
+        try
         {
-            AccountOpenedIntegrationEvent accountCreatedEvent => _topicProducer.Produce(accountCreatedEvent),
-            _ => throw new ArgumentException($"Unsupported message type: {message.GetType().Name}")
-        };
+            var eventTypeInstance = Type.GetType(eventType);
+            if (eventTypeInstance == null)
+            {
+                _logger.LogError("Unknown event type: {EventType}", eventType);
+                return;
+            }
+
+            var domainEvent = JsonSerializer.Deserialize(payload, eventTypeInstance);
+            if (domainEvent == null)
+            {
+                _logger.LogError("Failed to deserialize event: {Payload}", payload);
+                return;
+            }
+
+            await _mediator.Publish(domainEvent, cancellationToken);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error publishing event");
+            throw;
+        }
     }
 }

@@ -10,8 +10,9 @@ public class ApplicationDbContext: DbContext
     {
     }
     public DbSet<Account> Accounts => Set<Account>();
-    
-    
+    public DbSet<OutboxMessage> OutboxMessages => Set<OutboxMessage>();
+
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.HasDefaultSchema("Accounts");

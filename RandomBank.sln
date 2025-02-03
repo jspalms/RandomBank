@@ -17,17 +17,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Accounts.Infrastructure", "
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SharedKernel", "SharedKernel", "{3DFB2773-ED90-47B2-B71E-BB980A97B70E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedKernel", "src\SharedKernel\SharedKernel\SharedKernel.csproj", "{1C1D3650-82D4-4E30-B972-BA3065F2CA5A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharedKernel", "src\SharedKernel\SharedKernel\SharedKernel.csproj", "{1C1D3650-82D4-4E30-B972-BA3065F2CA5A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Users", "Users", "{FF4A48A8-49A0-4D5E-9993-14A0E3DBD520}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Users.Api", "src\Users\Users.Api\Users.Api.csproj", "{B063A658-8FEB-4D18-9761-89D325806537}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Users.Api", "src\Users\Users.Api\Users.Api.csproj", "{B063A658-8FEB-4D18-9761-89D325806537}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Users.Application", "src\Users\Users.Application\Users.Application.csproj", "{323C1195-F716-40F1-9031-C2F97388370F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Users.Application", "src\Users\Users.Application\Users.Application.csproj", "{323C1195-F716-40F1-9031-C2F97388370F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Users.Domain", "src\Users\Users.Domain\Users.Domain.csproj", "{3CE5DA36-DC01-4032-A6D6-CAF81FC0AB85}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Users.Domain", "src\Users\Users.Domain\Users.Domain.csproj", "{3CE5DA36-DC01-4032-A6D6-CAF81FC0AB85}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Users.Infrastructure", "src\Users\Users.Infrastructure\Users.Infrastructure.csproj", "{04A4AFE3-2262-495D-9758-113DFD8044DF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Users.Infrastructure", "src\Users\Users.Infrastructure\Users.Infrastructure.csproj", "{04A4AFE3-2262-495D-9758-113DFD8044DF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

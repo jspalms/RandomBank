@@ -5,6 +5,7 @@ using Extensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using SharedKernel.Domain.Interfaces;
+using SharedKernel.Infrastructure;
 
 public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : class, IAggregateRoot
 {
@@ -48,6 +49,7 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
 
     public async Task SaveChangesAsync()
     {
+        //increment version of all aggregate roots for concurrency checking
         foreach (var entry in _dbContext.ChangeTracker.Entries<IAggregateRoot>())
         {
             if (entry.State == EntityState.Modified)
@@ -56,10 +58,23 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
             }
         }
 
+        //Get all domain events and save to outbox
+
+        var domainEntities = _dbContext.ChangeTracker
+            .Entries<IAggregateRoot>()
+            .Where(x => x.Entity.DomainEvents.Any())
+            .ToList();
+
+        //Publish domain events to outbox
+
+        _dbContext.Set<OutboxMessage>().AddRange(domainEntities
+            .SelectMany(x => x.Entity.DomainEvents)
+            .Select(domainEvent => new OutboxMessage(domainEvent)));
+
         await _dbContext.SaveChangesAsync();
 
         //dispatching domain events after saving changes - ensures that the events are not dispatched if the database operation fails
         //trade off - means that the changes to other aggregates are not transactional - need to deal with eventual consistency
-        await _mediator.DispatchDomainEvents(_dbContext);
+        //await _mediator.DispatchDomainEvents(_dbContext);
     }
 }

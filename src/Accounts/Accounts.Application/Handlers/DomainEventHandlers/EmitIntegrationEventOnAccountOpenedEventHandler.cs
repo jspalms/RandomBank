@@ -1,25 +1,43 @@
-﻿using Accounts.Domain.DomainEvents;
+﻿namespace Account.Infrastructure.Events;
+
 using MediatR;
 using Microsoft.Extensions.Logging;
+using System.Text.Json;
 
-namespace Accounts.Application.Handlers.DomainEventHandlers;
-
-using Domain.IntegrationEvents;
-using Domain.Interfaces;
-
-internal class EmitIntegrationEventOnAccountOpenedEventHandler(
-    ILogger<EmitIntegrationEventOnAccountOpenedEventHandler> Logger,
-    IEventPublisher<AccountOpenedIntegrationEvent> eventPublisher): INotificationHandler<AccountOpenedEvent>
+public class EventPublisher : IEventPublisher
 {
-    public async Task Handle(AccountOpenedEvent notification, CancellationToken cancellationToken )
-    {
+    private readonly IMediator _mediator;
+    private readonly ILogger<EventPublisher> _logger;
 
-        //I want to emit an integration event in response to a domain event BUT I also want it to be transactional. 
-        //In the current implementation I cannot do that because the Aggregate has already been persisted by this pooint.
-        var integrationEvent = new AccountOpenedIntegrationEvent($"account opened with id: {notification.AggregateId}");
-        await eventPublisher.PublishAsync(integrationEvent);
-        
-        Logger.LogInformation($"Account opened event emitted for account id: {notification.AggregateId}");
-        
+    public EventPublisher(IMediator mediator, ILogger<EventPublisher> logger)
+    {
+        _mediator = mediator;
+        _logger = logger;
     }
-}
+
+    public async Task PublishAsync(string eventType, string payload, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var eventTypeInstance = Type.GetType(eventType);
+            if (eventTypeInstance == null)
+            {
+                _logger.LogError("Unknown event type: {EventType}", eventType);
+                return;
+            }
+
+            var domainEvent = JsonSerializer.Deserialize(payload, eventTypeInstance);
+            if (domainEvent == null)
+            {
+                _logger.LogError("Failed to deserialize event: {Payload}", payload);
+                return;
+            }
+
+            await _mediator.Publish(domainEvent, cancellationToken);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error publishing event");
+            throw;
+        }
+    }
