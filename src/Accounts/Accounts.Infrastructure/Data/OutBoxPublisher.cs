@@ -1,6 +1,7 @@
 ﻿using Accounts.Domain.Interfaces;
 using Accounts.Infrastructure.Data;
 using Accounts.Infrastructure.Events;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -28,13 +29,14 @@ public class OutboxProcessor : BackgroundService
             var messages = await dbContext.OutboxMessages
                 .Where(m => m.ProcessedOn == null)
                 .OrderBy(m => m.OccurredOn)
-                .Take(10) // Batch size
+                .Take(50) 
                 .ToListAsync(stoppingToken);
 
             foreach (var message in messages)
             {
                 try
                 {
+                    //Converts the outbox message to a type and publishes it
                     await _eventPublisher.PublishAsync(message.Type, message.Payload, stoppingToken);
                     message.ProcessedOn = DateTime.UtcNow;
                 }

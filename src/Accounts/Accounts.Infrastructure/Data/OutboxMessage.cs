@@ -12,6 +12,11 @@ public class OutboxMessage
     public DateTime? ProcessedOn { get; set; }
     public string? Error { get; set; }
 
+    public OutboxMessage()
+    {
+        
+    }
+
     public OutboxMessage(IDomainEvent domainEvent)
     {
         Id = domainEvent.EventId;

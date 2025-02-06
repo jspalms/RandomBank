@@ -15,8 +15,4 @@
     <ProjectReference Include="..\Accounts.Domain\Accounts.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Handlers\IntegrationEventHandlers\" />
-  </ItemGroup>
-
 </Project>

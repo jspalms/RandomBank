@@ -17,10 +17,5 @@ public class ApplicationDbContext: DbContext
     {
         modelBuilder.HasDefaultSchema("Accounts");
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
-
-        //Mass Transit outbox
-        // modelBuilder.AddInboxStateEntity();
-        // modelBuilder.AddOutboxMessageEntity();
-        // modelBuilder.AddOutboxStateEntity();
     }
 }

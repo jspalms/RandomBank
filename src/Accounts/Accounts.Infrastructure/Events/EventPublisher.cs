@@ -19,13 +19,14 @@ public class EventPublisher : IEventPublisher
     {
         try
         {
+            //Gets the type which the event should be 
             var eventTypeInstance = Type.GetType(eventType);
             if (eventTypeInstance == null)
             {
                 _logger.LogError("Unknown event type: {EventType}", eventType);
                 return;
             }
-
+            //Deserializes the event payload into the type specified
             var domainEvent = JsonSerializer.Deserialize(payload, eventTypeInstance);
             if (domainEvent == null)
             {
