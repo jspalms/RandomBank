@@ -27,15 +27,20 @@ Admin can add and edit products i.e. a kind of bank account
 
 ## Things to add
 
-1. Add kafka to produce and consume events
-2. Add certificate for HTTPS
-3. Containerize the application
+1. Add kafka to produce integration event off the back of a domain event
+2. Add the second application which will be purely event driven
+3. Consume event and "product a notification"
+4. Add some endpoint with an authentification policy
+5. Setup keycloak
+6. Setup swagger to authenticate via keycloak
+7. Containerise it
 
 ### Potential technologies to look into
 
 - Api gateway
-- Open telemetry for logging through seq (or similar) - want to trace through the paplication
+- Open telemetry for logging through seq (or similar) - want to trace through the application
 - Deploy to AWS
+- Add certificate for HTTPS
 
 # Future projects
 

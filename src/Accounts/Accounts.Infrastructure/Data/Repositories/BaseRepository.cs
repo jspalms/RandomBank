@@ -1,7 +1,7 @@
 ﻿namespace Accounts.Infrastructure.Data.Repositories;
 
+using Accounts.Infrastructure.Events;
 using Domain.Interfaces;
-using Extensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using SharedKernel.Domain.Interfaces;
@@ -9,18 +9,18 @@ using SharedKernel.Domain.Interfaces;
 public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : class, IAggregateRoot
 {
     private readonly ApplicationDbContext _dbContext;
-    
+
     private readonly IMediator _mediator;
-    
+
     protected BaseRepository(
-        ApplicationDbContext dbContext, 
+        ApplicationDbContext dbContext,
         IMediator mediator
         )
     {
         _dbContext = dbContext;
         _mediator = mediator;
     }
-    
+
     public Task<bool> ExistsAsync(Guid id)
     {
         return _dbContext.Set<TEntity>().AnyAsync(e => e.Id == id);

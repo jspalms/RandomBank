@@ -1,5 +1,6 @@
 ﻿namespace Accounts.Infrastructure.Events;
 
+using Accounts.Infrastructure.Exceptions;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using System.Text.Json;
@@ -24,7 +25,7 @@ public class EventPublisher : IEventPublisher
             if (eventTypeInstance == null)
             {
                 _logger.LogError("Unknown event type: {EventType}", eventType);
-                return;
+                throw new EventTypeException($"Unknown event type: {eventType}");
             }
             //Deserializes the event payload into the type specified
             var domainEvent = JsonSerializer.Deserialize(payload, eventTypeInstance);

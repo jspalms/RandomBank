@@ -1,6 +1,6 @@
-﻿using Accounts.Domain.Interfaces;
+﻿namespace Accounts.Infrastructure.Events;
+
 using Accounts.Infrastructure.Data;
-using Accounts.Infrastructure.Events;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -26,10 +26,12 @@ public class OutboxProcessor : BackgroundService
             using var scope = _scopeFactory.CreateScope();
             var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
+            // Could shift any messages with errorcount above a threshold into a DLQ
+
             var messages = await dbContext.OutboxMessages
                 .Where(m => m.ProcessedOn == null)
                 .OrderBy(m => m.OccurredOn)
-                .Take(50) 
+                .Take(50)
                 .ToListAsync(stoppingToken);
 
             foreach (var message in messages)
@@ -38,12 +40,14 @@ public class OutboxProcessor : BackgroundService
                 {
                     //Converts the outbox message to a type and publishes it
                     await _eventPublisher.PublishAsync(message.Type, message.Payload, stoppingToken);
+                    //Only mark the message as processed if it was successfully published
                     message.ProcessedOn = DateTime.UtcNow;
                 }
                 catch (Exception ex)
                 {
-                    message.Error = ex.Message;
                     _logger.LogError(ex, "Failed to process outbox message: {MessageId}", message.Id);
+                    message.Error = ex.Message;
+                    message.ErrorCount++;
                 }
             }
 

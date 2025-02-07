@@ -10,5 +10,7 @@ public class AccountCreatedDomainEventHandler(ILogger<AccountCreatedDomainEventH
     {
         logger.LogInformation("Handled AccountOpenedEvent");
         return Task.CompletedTask;
+
+        //emit a kafka event
     }
 }

@@ -1,10 +1,10 @@
 ﻿namespace Accounts.Infrastructure.Data;
 
+using Accounts.Infrastructure.Events;
 using Domain.Entities;
-using MassTransit;
 using Microsoft.EntityFrameworkCore;
 
-public class ApplicationDbContext: DbContext
+public class ApplicationDbContext : DbContext
 {
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
     {
