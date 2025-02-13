@@ -2,6 +2,6 @@
 
 public enum AccountType
 {
-    FlexibleSavingsAccount,
+    VariableSavingsAccount,
     FixedSavingsAccount,
 }

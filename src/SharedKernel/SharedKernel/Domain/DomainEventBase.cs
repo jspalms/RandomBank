@@ -2,9 +2,9 @@
 
 using Interfaces;
 
-public abstract record DomainEventBase: IDomainEvent
+public abstract record DomainEventBase(Guid AggregateId) : IDomainEvent
 {
     public Guid EventId { get; } = Guid.NewGuid();
-    public DateTime CreatedOn { get; } = DateTime.UtcNow;   
-    public required Guid AggregateId { get; init; }     
+    public DateTime CreatedOn { get; } = DateTime.UtcNow;
+    public Guid AggregateId { get; init; } = AggregateId;
 }

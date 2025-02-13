@@ -1,13 +1,17 @@
 ﻿namespace Accounts.Application.Handlers.CommandHandlers;
 
 using Domain.Entities;
+using Domain.Entities.Accounts;
 using Domain.Enums;
 using Domain.Interfaces;
 using Exceptions;
 using MediatR;
 using Models;
 
-public class CreateAccountCommandHandler(IAccountRepository accountRepository) : IRequestHandler<CreateAccountCommand, Guid>
+public class CreateAccountCommandHandler(
+    IAccountRepository accountRepository,
+    IAccountFactory accountFactory
+) : IRequestHandler<CreateAccountCommand, Guid>
 {
     public async Task<Guid> Handle(CreateAccountCommand command, CancellationToken cancellationToken)
     {
@@ -16,9 +20,14 @@ public class CreateAccountCommandHandler(IAccountRepository accountRepository) :
         {
             throw new AggregateAlreadyExistsException(command.AggregateId);
         }
-
-        var account = new Account(command.CustomerId, Enum.Parse<AccountType>(command.AccountType), command.Description, command.InitialCredit);
-
+        
+        var account = accountFactory.CreateAccount(
+            Enum.Parse<AccountType>(command.AccountType),
+            command.Description,
+            command.InitialCredit,
+            command.UserEmail
+        );
+        
         await accountRepository.AddAsync(account);
 
         await accountRepository.SaveChangesAsync();

@@ -1,34 +1,35 @@
-﻿namespace Accounts.Domain.Entities;
+﻿namespace Accounts.Domain.Entities.Accounts;
 
-using Accounts.Domain.DomainEvents;
-using Accounts.Domain.Exceptions;
 using System.Diagnostics.CodeAnalysis;
+using DomainEvents;
 using Enums;
+using Exceptions;
 using SharedKernel.Domain;
 
-public class Account: AggregateRootBase
+public abstract class Account
 {
+    public Guid Id { get; private set; }
     public required AccountType AccountType { get; set; }
-    public required string Description { get; set; }
+    public  string? Description { get; set; }
     public decimal Balance { get; private set; }
     public DateTime CreatedAt { get; private set; }
     public DateTime UpdatedAt { get; private set; }
-    public Guid CustomerId { get; private set; }
+    public Guid UserPortfolioId { get; private set; }
+    public UserPortfolio UserPortfolio { get; set; }
     public bool IsClosed { get; private set; }
     public List<Transaction> Transactions { get; private set; } = [];
     
     
     [SetsRequiredMembers]
-    public Account(Guid customerId, AccountType accountType, string description, decimal balance)
+    protected Account(AccountType accountType, string description, decimal balance, Guid userPortfolioId)
     {
         Id = Guid.NewGuid();
-        CustomerId = customerId;
         AccountType = accountType;
         Description = description;
         Balance = balance;
         CreatedAt = DateTime.UtcNow;
         UpdatedAt = DateTime.UtcNow;
-        AddDomainEvent(new AccountOpenedEvent{AggregateId = Id});
+        UserPortfolioId = userPortfolioId;
     }
 
     public void Credit(decimal amount, string reference)
@@ -41,7 +42,6 @@ public class Account: AggregateRootBase
             Reference = reference,
             Amount = amount
         });
-        AddDomainEvent(new TransactionAddedEvent{AggregateId = Id});
     }
 
     public void Debit(decimal amount, string reference)
@@ -58,7 +58,6 @@ public class Account: AggregateRootBase
             Reference = reference,
             Amount = amount
         });
-        AddDomainEvent(new TransactionAddedEvent{AggregateId = Id});
     }
     public void Update(string description)
     {
@@ -70,6 +69,5 @@ public class Account: AggregateRootBase
     {
         IsClosed = true;
         UpdatedAt = DateTime.UtcNow;
-        AddDomainEvent(new AccountClosedEvent{AggregateId = Id});
     }
 }

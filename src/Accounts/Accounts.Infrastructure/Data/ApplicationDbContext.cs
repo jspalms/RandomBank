@@ -2,6 +2,7 @@
 
 using Accounts.Infrastructure.Events;
 using Domain.Entities;
+using Domain.Entities.Accounts;
 using Microsoft.EntityFrameworkCore;
 
 public class ApplicationDbContext : DbContext

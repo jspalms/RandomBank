@@ -48,8 +48,17 @@ public static class AccountsEndpoints
         {
             return TypedResults.BadRequest(validationResult.ToString());
         }
+        
+        //Need to get user email from the JWT token
+        var userEmail = "dummyValue";
 
-        var command = new CreateAccountCommand(Guid.NewGuid(), createAccountRequest.CustomerId, createAccountRequest.AccountType, createAccountRequest.description, createAccountRequest.InitialCredit);
+        var command = new CreateAccountCommand(
+            Guid.NewGuid(),
+            createAccountRequest.CustomerId,
+            createAccountRequest.AccountType,
+            createAccountRequest.description,
+            createAccountRequest.InitialCredit,
+            userEmail);
 
         var result = await mediator.Send(command);
 
