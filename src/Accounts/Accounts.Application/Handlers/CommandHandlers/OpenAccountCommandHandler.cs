@@ -1,0 +1,40 @@
+﻿namespace Accounts.Application.Handlers.CommandHandlers;
+
+using Domain.Exceptions;
+using Domain.Interfaces;
+using MediatR;
+using Models;
+
+public class OpenAccountCommandHandler(
+    IPortfolioRepository portfolioRepository,
+    IProductRepository productRepository
+) : IRequestHandler<OpenAccountCommand, Guid>
+{
+    public async Task<Guid> Handle(OpenAccountCommand command, CancellationToken cancellationToken)
+    {
+        var portfolioAggregate = await portfolioRepository.GetByIdAsync(command.CustomerId);
+        
+        if (portfolioAggregate == null)
+        {
+            throw new PortfolioNotFoundException(command.CustomerId);
+        }
+
+        var productAggregate = await productRepository.GetProductByProductOptionIdAsync(command.productOptionId);
+        
+        if (productAggregate == null)
+        {
+            throw new ProductNotFoundException(command.productOptionId);
+        }
+        
+        var newAccountId = portfolioAggregate.OpenAccount(
+            productAggregate.Type, 
+            productAggregate.SubType, 
+            command.productOptionId,
+            command.Description, 
+            command.InitialBalance);
+
+        await portfolioRepository.SaveChangesAsync();
+
+        return newAccountId;
+    }
+}

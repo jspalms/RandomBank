@@ -8,14 +8,14 @@ using Interfaces;
 
 public class ISAAccountFactory: IAccountFactory
 {
-    public Account CreateAccount(ProductOption productOption, string? description, decimal initialBalance, string customerEmail)
+    public Account CreateAccount(ProductSubType subType, string? description, decimal? initialBalance, Guid UserPortfolioID, Guid productOptionId)
     {
-        return productOption.Product.SubType switch
+        return subType switch
         {
-            ProductSubType.Fixed => new FixedISAAccount(productOption, description, initialBalance, customerEmail),
-            ProductSubType.Variable => new VariableISAAccount(productOption, description, initialBalance, customerEmail),
+            ProductSubType.Fixed => new FixedISAAccount(description, initialBalance, UserPortfolioID, productOptionId),
+            ProductSubType.Variable => new VariableISAAccount(description, initialBalance, UserPortfolioID, productOptionId),
 
-            _ => throw new NotImplementedException($"Unsupported subtype: {productOption.Product.SubType} of product type: {productOption.Product.Type}")
+            _ => throw new NotImplementedException($"Unsupported subtype: {subType} of product type: {ProductType.ISA}")
         };
     }
 }

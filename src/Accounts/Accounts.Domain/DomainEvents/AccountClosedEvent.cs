@@ -1,9 +1,9 @@
 ﻿namespace Accounts.Domain.DomainEvents;
 
+using MediatR;
 using SharedKernel.Domain;
-using SharedKernel.Domain.Interfaces;
 
-public record AccountClosedEvent(Guid AccountId, Guid AggregateId) : DomainEventBase(AggregateId), IDomainEvent
+public record AccountClosedEvent(Guid AccountId, Guid AggregateId) : DomainEventBase(AggregateId), INotification
 {
 
 }

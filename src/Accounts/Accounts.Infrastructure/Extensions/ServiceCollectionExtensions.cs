@@ -14,7 +14,7 @@ public static class ServiceCollectionExtensions
     {
         services.AddDbContext<ApplicationDbContext>(options =>
             options.UseNpgsql(configuration.GetConnectionString("PostgresConnection")));
-        services.AddScoped<IAccountRepository, AccountRepository>();
+        services.AddScoped<IPortfolioRepository, PortfolioRepository>();
         services.AddSingleton<IEventPublisher, EventPublisher>();
         services.AddHostedService<OutboxProcessor>();
         

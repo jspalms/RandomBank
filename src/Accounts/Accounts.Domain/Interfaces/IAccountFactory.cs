@@ -2,9 +2,9 @@
 
 using Entities;
 using Entities.Accounts;
+using Enums;
 
 public interface IAccountFactory
 {
-    Account CreateAccount(ProductOption productOption, string? description, decimal initialBalance, string customerEmail);
-    
+    Account CreateAccount(ProductSubType subType, string? description, decimal? initialBalance, Guid UserPortfolioID, Guid productOptionId);
 }

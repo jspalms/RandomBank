@@ -3,6 +3,7 @@
 using Accounts;
 using DomainEvents;
 using Enums;
+using Exceptions;
 using Factories;
 using SharedKernel.Domain;
 
@@ -12,19 +13,20 @@ public class UserPortfolio: AggregateRootBase
     public UserISALimits UserISALimits { get; private set; }
     public UserDetails UserDetails { get; private set; }
     
-    public UserPortfolio(UserDetails userDetails, UserISALimits userISALimits)
+    public UserPortfolio(UserDetails userDetails)
     {
         Id = Guid.NewGuid();
         UserDetails = userDetails;
         UserISALimits = new UserISALimits();
     }
     
-    public void OpenAccount(ProductOption option, string description, decimal initialBalance)
+    public Guid OpenAccount(ProductType productType, ProductSubType productSubType, Guid productOptionId, string description, decimal? initialBalance)
     {
-        var accountFactory = AccountFactoryProvider.GetFactory(option.Product.Type);
-        var account = accountFactory.CreateAccount(option, description, initialBalance, UserDetails.Email);
+        var accountFactory = AccountFactoryProvider.GetFactory(productType);
+        var account = accountFactory.CreateAccount(productSubType, description, initialBalance, Id, productOptionId);
         UserAccounts.Add(account);
         AddDomainEvent(new AccountOpenedEvent(account.Id, Id));
+        return account.Id;
     }
     
     public void CloseAccount(Guid accountId)
@@ -32,7 +34,7 @@ public class UserPortfolio: AggregateRootBase
         var account = UserAccounts.FirstOrDefault(a => a.Id == accountId);
         if (account == null)
         {
-            throw new AccountNotFoundException();
+            throw new AccountNotFoundException(accountId, Id);
         }
         account.Close();
         AddDomainEvent(new AccountClosedEvent(account.Id, Id));

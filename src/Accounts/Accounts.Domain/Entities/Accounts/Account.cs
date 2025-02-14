@@ -17,19 +17,21 @@ public abstract class Account
     public Guid UserPortfolioId { get; private set; }
     public UserPortfolio UserPortfolio { get; set; }
     public bool IsClosed { get; private set; }
+    public Guid ProductOptionId { get; private set; }
     public List<Transaction> Transactions { get; private set; } = [];
     
     
     [SetsRequiredMembers]
-    protected Account(AccountType accountType, string description, decimal balance, Guid userPortfolioId)
+    protected Account(AccountType accountType, string? description, decimal? initialBalance, Guid userPortfolioId, Guid productOptionId)
     {
         Id = Guid.NewGuid();
         AccountType = accountType;
         Description = description;
-        Balance = balance;
+        Balance = initialBalance ?? 0;
         CreatedAt = DateTime.UtcNow;
         UpdatedAt = DateTime.UtcNow;
         UserPortfolioId = userPortfolioId;
+        ProductOptionId = productOptionId;
     }
 
     public void Credit(decimal amount, string reference)

@@ -7,9 +7,10 @@ public class FixedISAAccount: Account
 {
     [SetsRequiredMembers]
     public FixedISAAccount(
-        string description,
-        decimal balance,
-        Guid userPortfolioID) : base(AccountType.FixedSavingsAccount, description, balance, userPortfolioID)
+        string? description,
+        decimal? initialBalance,
+        Guid userPortfolioID,
+        Guid productOptionId) : base(AccountType.FixedSavingsAccount, description, initialBalance, userPortfolioID, productOptionId)
     {
     }
 }

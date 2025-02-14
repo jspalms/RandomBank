@@ -7,9 +7,10 @@ public class VariableISAAccount: Account
 {
     [SetsRequiredMembers]
     public VariableISAAccount(
-        string description,
-        decimal balance,
-        Guid userPortfolioID) : base(AccountType.VariableSavingsAccount, description, balance, userPortfolioID)
+        string? description,
+        decimal? initialBalance,
+        Guid userPortfolioID,
+        Guid productOptionId) : base(AccountType.FixedSavingsAccount, description, initialBalance, userPortfolioID, productOptionId)
     {
     }
     
