@@ -1,7 +1,11 @@
 ﻿namespace Accounts.Api.EndPoints;
 
-using Accounts.Api.Models;
+using System.Security.Claims;
+using Models;
 using Accounts.Application.Models;
+using Application.Models.Commands;
+using Application.Models.Queries;
+using Domain.Entities.Accounts;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -28,14 +32,29 @@ public static class AccountsEndpoints
             .WithName("DeleteAccount");
     }
 
-    private static object[] GetAccounts()
+    private static async Task<Results<Ok<IEnumerable<AccountDetailsDTO>>, NotFound>> GetAccounts(
+        IMediator mediator, 
+        ClaimsPrincipal userClaims)
     {
-        return new[] { new { Id = 1, Name = "Account 1" }, new { Id = 2, Name = "Account 2" } };
+        var userId = userClaims.Claims.FirstOrDefault(c => c.Type == "sub")?.Value;
+        var accounts = await mediator.Send(new GetAccountsQuery(Guid.Parse(userId)));
+        return TypedResults.Ok(accounts);
     }
 
-    private static object GetAccount(int id)
+    private static async Task<Results<Ok<AccountDetailsDTO>, NotFound>> GetAccount(
+        IMediator mediator, 
+        Guid id,
+        ClaimsPrincipal userClaims
+        )
     {
-        return new { Id = id, Name = $"Product {id}" };
+        var userId = userClaims.Claims.FirstOrDefault(c => c.Type == "sub")?.Value;
+        if(userId == null)
+        {
+            return TypedResults.NotFound();
+        }
+        var account = await mediator.Send(new GetAccountQuery(id, Guid.Parse(userId)));
+
+        return account is not null ? TypedResults.Ok(account) : TypedResults.NotFound();
     }
 
     private static async Task<Results<Created, BadRequest<string>>> CreateAccount(

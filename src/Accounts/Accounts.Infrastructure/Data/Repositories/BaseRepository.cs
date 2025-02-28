@@ -26,9 +26,9 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
         return _dbContext.Set<TEntity>().AnyAsync(e => e.Id == id);
     }
 
-    public async Task<TEntity?> GetByIdAsync(Guid id)
+    public async Task<TEntity?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        return await _dbContext.Set<TEntity>().FindAsync(id);
+        return await _dbContext.Set<TEntity>().FindAsync([id], cancellationToken);
     }
 
     public async Task<List<TEntity>> GetAllAsync()

@@ -11,6 +11,7 @@ public class ApplicationDbContext : DbContext
     {
     }
     public DbSet<Account> Accounts => Set<Account>();
+    public DbSet<Product> Products => Set<Product>();
     public DbSet<OutboxMessage> OutboxMessages => Set<OutboxMessage>();
 
 

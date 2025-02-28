@@ -1,4 +1,4 @@
-﻿namespace Accounts.Application.Models;
+﻿namespace Accounts.Application.Models.Commands;
 
 using MediatR;
 

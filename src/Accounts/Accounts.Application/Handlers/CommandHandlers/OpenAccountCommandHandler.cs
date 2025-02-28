@@ -4,6 +4,7 @@ using Domain.Exceptions;
 using Domain.Interfaces;
 using MediatR;
 using Models;
+using Models.Commands;
 
 public class OpenAccountCommandHandler(
     IPortfolioRepository portfolioRepository,
@@ -12,7 +13,7 @@ public class OpenAccountCommandHandler(
 {
     public async Task<Guid> Handle(OpenAccountCommand command, CancellationToken cancellationToken)
     {
-        var portfolioAggregate = await portfolioRepository.GetByIdAsync(command.CustomerId);
+        var portfolioAggregate = await portfolioRepository.GetByIdAsync(command.CustomerId, cancellationToken);
         
         if (portfolioAggregate == null)
         {
