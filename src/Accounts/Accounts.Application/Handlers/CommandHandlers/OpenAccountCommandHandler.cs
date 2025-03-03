@@ -32,7 +32,7 @@ public class OpenAccountCommandHandler(
             productAggregate.SubType, 
             command.productOptionId,
             command.Description, 
-            command.InitialBalance);
+            command.InitialBalance ?? 0);
 
         await portfolioRepository.SaveChangesAsync();
 

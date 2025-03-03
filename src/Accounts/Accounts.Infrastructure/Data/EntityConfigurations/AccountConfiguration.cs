@@ -10,7 +10,6 @@ public class AccountConfiguration: IEntityTypeConfiguration<Account>
 {
     public void Configure(EntityTypeBuilder<Account> builder)
     {
-        builder.Property("VersionNumber").IsConcurrencyToken();
         builder.HasDiscriminator<AccountType>(x => x.AccountType)
             .HasValue<FixedISAAccount>(AccountType.FixedSavingsAccount)
             .HasValue<VariableISAAccount>(AccountType.VariableSavingsAccount);

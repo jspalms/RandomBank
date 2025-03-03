@@ -1,20 +1,18 @@
 ﻿namespace Accounts.Domain.Entities.Accounts;
 
 using System.Diagnostics.CodeAnalysis;
-using DomainEvents;
 using Enums;
 using Exceptions;
-using SharedKernel.Domain;
 
 public abstract class Account
 {
     public Guid Id { get; private set; }
     public required AccountType AccountType { get; set; }
     public  string? Description { get; set; }
-    public decimal Balance { get; private set; }
+    public decimal Balance { get; set; }
     public DateTime CreatedAt { get; private set; }
     public DateTime UpdatedAt { get; private set; }
-    public Guid UserPortfolioId { get; private set; }
+    public Guid UserPortfolioId { get; set; }
     public UserPortfolio UserPortfolio { get; set; }
     public bool IsClosed { get; private set; }
     public Guid ProductOptionId { get; private set; }
@@ -22,12 +20,12 @@ public abstract class Account
     
     
     [SetsRequiredMembers]
-    protected Account(AccountType accountType, string? description, decimal? initialBalance, Guid userPortfolioId, Guid productOptionId)
+    protected Account(AccountType accountType, string? description, decimal balance, Guid userPortfolioId, Guid productOptionId)
     {
         Id = Guid.NewGuid();
         AccountType = accountType;
         Description = description;
-        Balance = initialBalance ?? 0;
+        Balance = balance;
         CreatedAt = DateTime.UtcNow;
         UpdatedAt = DateTime.UtcNow;
         UserPortfolioId = userPortfolioId;

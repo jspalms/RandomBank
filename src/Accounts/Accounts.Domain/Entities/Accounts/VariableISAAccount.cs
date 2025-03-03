@@ -8,9 +8,9 @@ public class VariableISAAccount: Account
     [SetsRequiredMembers]
     public VariableISAAccount(
         string? description,
-        decimal? initialBalance,
-        Guid userPortfolioID,
-        Guid productOptionId) : base(AccountType.FixedSavingsAccount, description, initialBalance, userPortfolioID, productOptionId)
+        decimal balance,
+        Guid userPortfolioId,
+        Guid productOptionId) : base(AccountType.FixedSavingsAccount, description, balance, userPortfolioId, productOptionId)
     {
     }
     

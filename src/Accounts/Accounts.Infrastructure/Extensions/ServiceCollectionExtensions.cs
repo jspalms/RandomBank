@@ -19,6 +19,8 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<IEventPublisher, EventPublisher>();
         services.AddHostedService<OutboxProcessor>();
         
+        
+        
         return services;
     }
 }

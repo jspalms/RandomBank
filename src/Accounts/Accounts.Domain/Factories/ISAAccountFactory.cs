@@ -8,7 +8,7 @@ using Interfaces;
 
 public class ISAAccountFactory: IAccountFactory
 {
-    public Account CreateAccount(ProductSubType subType, string? description, decimal? initialBalance, Guid UserPortfolioID, Guid productOptionId)
+    public Account CreateAccount(ProductSubType subType, string? description, decimal initialBalance, Guid UserPortfolioID, Guid productOptionId)
     {
         return subType switch
         {

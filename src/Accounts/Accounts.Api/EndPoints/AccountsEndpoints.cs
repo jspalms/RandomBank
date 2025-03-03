@@ -22,7 +22,7 @@ public static class AccountsEndpoints
         accounts.MapGet("/{id}", GetAccount)
             .WithName("GetAccount");
 
-        accounts.MapPost("", CreateAccount)
+        accounts.MapPost("", OpenAccount)
             .WithName("CreateAccount");
 
         accounts.MapPut("/{id}", UpdateAccount)
@@ -32,7 +32,7 @@ public static class AccountsEndpoints
             .WithName("DeleteAccount");
     }
 
-    private static async Task<Results<Ok<IEnumerable<AccountDetailsDTO>>, NotFound>> GetAccounts(
+    private static async Task<Ok<IEnumerable<AccountDetailsDTO>>> GetAccounts(
         IMediator mediator, 
         ClaimsPrincipal userClaims)
     {
@@ -57,12 +57,12 @@ public static class AccountsEndpoints
         return account is not null ? TypedResults.Ok(account) : TypedResults.NotFound();
     }
 
-    private static async Task<Results<Created, BadRequest<string>>> CreateAccount(
-        CreateAccountRequest createAccountRequest, 
-        IValidator<CreateAccountRequest> createAccountRequestValidator,
+    private static async Task<Results<Created, BadRequest<string>>> OpenAccount(
+        OpenAccountRequest openAccountRequest, 
+        IValidator<OpenAccountRequest> openAccountRequestValidator,
         IMediator mediator)
     {
-        var validationResult = await createAccountRequestValidator.ValidateAsync(createAccountRequest);
+        var validationResult = await openAccountRequestValidator.ValidateAsync(openAccountRequest);
         if (!validationResult.IsValid)
         {
             return TypedResults.BadRequest(validationResult.ToString());
@@ -73,9 +73,9 @@ public static class AccountsEndpoints
 
         var command = new OpenAccountCommand(
             userId,
-            createAccountRequest.productOptionId,
-            createAccountRequest.description,
-            createAccountRequest.initialCredit);
+            openAccountRequest.productOptionId,
+            openAccountRequest.description,
+            openAccountRequest.initialCredit);
 
         var result = await mediator.Send(command);
 

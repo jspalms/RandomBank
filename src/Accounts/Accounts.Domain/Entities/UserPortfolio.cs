@@ -11,7 +11,13 @@ public class UserPortfolio: AggregateRootBase
 {
     public IList<Account> UserAccounts { get; private set; } = [];
     public UserISALimits UserISALimits { get; private set; }
-    public UserDetails UserDetails { get; private set; }
+    public UserDetails UserDetails { get; set; }
+
+    //required for EF
+    #pragma warning disable CS8618 
+    private UserPortfolio() {}
+    #pragma warning restore CS8618 
+
     
     public UserPortfolio(UserDetails userDetails)
     {
@@ -20,7 +26,7 @@ public class UserPortfolio: AggregateRootBase
         UserISALimits = new UserISALimits();
     }
     
-    public Guid OpenAccount(ProductType productType, ProductSubType productSubType, Guid productOptionId, string description, decimal? initialBalance)
+    public Guid OpenAccount(ProductType productType, ProductSubType productSubType, Guid productOptionId, string description, decimal initialBalance)
     {
         var accountFactory = AccountFactoryProvider.GetFactory(productType);
         var account = accountFactory.CreateAccount(productSubType, description, initialBalance, Id, productOptionId);
