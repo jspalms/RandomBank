@@ -1,6 +1,6 @@
 ﻿namespace Accounts.Api.EndPoints;
 
-public class UserEndpoints
+public class PortfolioEndpoints
 {
     
 }
