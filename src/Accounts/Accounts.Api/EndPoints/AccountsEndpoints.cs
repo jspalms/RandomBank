@@ -30,6 +30,8 @@ public static class AccountsEndpoints
 
         accounts.MapDelete("/{id}", DeleteAccount)
             .WithName("DeleteAccount");
+
+        accounts.MapGet("/Test", (HttpContext context) => context.User);
     }
 
     private static async Task<Ok<IEnumerable<AccountDetailsDTO>>> GetAccounts(

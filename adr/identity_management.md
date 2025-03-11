@@ -16,6 +16,11 @@ Clients represent applications
 
 http://keycloakhost:keycloakport/realms/{realm}/.well-known/openid-configuration
 
+Set up a realm e.g. Dev
+In realm settings allow user registration
+Set up a client within that realm e.g. Random-Bank
+Add origin and valid redirect URLS
+
 ### Questions
 
 Need a way to hook into these events from the IDP or maybe we don't if each request is going to come with a auth token?
