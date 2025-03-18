@@ -17,11 +17,12 @@ builder.Services.Configure<KeycloakOptions>(builder.Configuration.GetSection("Ke
 var keycloakOptions = builder.Configuration.GetSection("Keycloak").Get<KeycloakOptions>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-
 .AddJwtBearer(jwtOptions =>
 {
-    jwtOptions.Authority = keycloakOptions.AuthorisationUrl.ToString();
+    jwtOptions.Authority = keycloakOptions.Authority;
     jwtOptions.Audience = keycloakOptions.ClientId;
+    jwtOptions.MetadataAddress = keycloakOptions.MetadataAddress;
+    jwtOptions.RequireHttpsMetadata = false;
 });
 
 builder.Services.AddAuthorization();

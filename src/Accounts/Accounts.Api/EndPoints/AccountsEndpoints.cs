@@ -5,16 +5,20 @@ using Models;
 using Accounts.Application.Models;
 using Application.Models.Commands;
 using Application.Models.Queries;
-using Domain.Entities.Accounts;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Accounts.Api.Utilities;
 
 public static class AccountsEndpoints
 {
     public static void RegisterAccountEndpoints(this IEndpointRouteBuilder builder)
     {
-        var accounts = builder.MapGroup("/accounts").WithTags("Accounts Api").WithOpenApi();
+        var accounts = builder
+            .MapGroup("/accounts")
+            .WithTags("Accounts Api")
+            .WithOpenApi()
+            .RequireAuthorization();
 
         accounts.MapGet("", GetAccounts)
             .WithName("GetAccounts");
@@ -30,51 +34,57 @@ public static class AccountsEndpoints
 
         accounts.MapDelete("/{id}", DeleteAccount)
             .WithName("DeleteAccount");
-
-        accounts.MapGet("/Test", (HttpContext context) => context.User);
     }
 
-    private static async Task<Ok<IEnumerable<AccountDetailsDTO>>> GetAccounts(
-        IMediator mediator, 
+    private static async Task<Results<Ok<IEnumerable<AccountDetailsDTO>>, UnauthorizedHttpResult>> GetAccounts(
+        IMediator mediator,
         ClaimsPrincipal userClaims)
     {
-        var userId = userClaims.Claims.FirstOrDefault(c => c.Type == "sub")?.Value;
-        var accounts = await mediator.Send(new GetAccountsQuery(Guid.Parse(userId)));
+        var userId = ClaimsHelper.GetUserId(userClaims);
+        if (userId == null)
+        {
+            return TypedResults.Unauthorized();
+        }
+        var accounts = await mediator.Send(new GetAccountsQuery(userId.Value));
         return TypedResults.Ok(accounts);
     }
 
-    private static async Task<Results<Ok<AccountDetailsDTO>, NotFound>> GetAccount(
+    private static async Task<Results<Ok<AccountDetailsDTO>, NotFound, UnauthorizedHttpResult>> GetAccount(
         IMediator mediator, 
         Guid id,
         ClaimsPrincipal userClaims
         )
     {
-        var userId = userClaims.Claims.FirstOrDefault(c => c.Type == "sub")?.Value;
-        if(userId == null)
+        var userId = ClaimsHelper.GetUserId(userClaims);
+        if (userId == null)
         {
-            return TypedResults.NotFound();
+            return TypedResults.Unauthorized();
         }
-        var account = await mediator.Send(new GetAccountQuery(id, Guid.Parse(userId)));
+        var account = await mediator.Send(new GetAccountQuery(id, userId.Value));
 
         return account is not null ? TypedResults.Ok(account) : TypedResults.NotFound();
     }
 
-    private static async Task<Results<Created, BadRequest<string>>> OpenAccount(
+    private static async Task<Results<Created, UnauthorizedHttpResult, BadRequest<string>>> OpenAccount(
         OpenAccountRequest openAccountRequest, 
         IValidator<OpenAccountRequest> openAccountRequestValidator,
-        IMediator mediator)
+        IMediator mediator,
+        ClaimsPrincipal userClaims)
     {
         var validationResult = await openAccountRequestValidator.ValidateAsync(openAccountRequest);
         if (!validationResult.IsValid)
         {
             return TypedResults.BadRequest(validationResult.ToString());
         }
-        
-        //Should get the user ID using the token
-        var userId = Guid.NewGuid();
+
+        var userId = ClaimsHelper.GetUserId(userClaims);
+        if (userId == null)
+        {
+            return TypedResults.Unauthorized();
+        }
 
         var command = new OpenAccountCommand(
-            userId,
+            userId.Value,
             openAccountRequest.productOptionId,
             openAccountRequest.description,
             openAccountRequest.initialCredit);
