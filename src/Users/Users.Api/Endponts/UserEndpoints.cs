@@ -5,6 +5,8 @@ using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Models;
+using System.Security.Claims;
+using Users.Api.Utilities;
 
 public static class UsersEndpoints
 {
@@ -40,18 +42,20 @@ public static class UsersEndpoints
     }
 
     private static async Task<Results<Created, BadRequest<string>>> CreateUser(
-        CreateUserRequest createUserRequest, 
-        AbstractValidator<CreateUserRequest> createUserRequestValidator,
-        IMediator mediator)
+        IMediator mediator,
+        ClaimsPrincipal userClaims)
     {
-        var validationResult = await createUserRequestValidator.ValidateAsync(createUserRequest);
+        var firstName = ClaimsHelper.GetFirstName(userClaims);
+        var lastName = ClaimsHelper.GetLastName(userClaims);
+        var userEmail = ClaimsHelper.GetEmail(userClaims);
 
-        if (!validationResult.IsValid)
+        if(string.IsNullOrWhiteSpace(firstName) || string.IsNullOrWhiteSpace(lastName) || string.IsNullOrWhiteSpace(userEmail))
         {
-            return TypedResults.BadRequest(validationResult.ToString());
+            return TypedResults.BadRequest("User claims are missing required information");
         }
 
-        var command = new CreateUserCommand(createUserRequest.FirstName, createUserRequest.LastName, createUserRequest.UserEmail, createUserRequest.PhoneNumber);
+
+        var command = new CreateUserCommand(firstName, lastName, userEmail);
 
         var result = await mediator.Send(command);
 
