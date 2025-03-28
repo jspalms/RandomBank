@@ -1,4 +1,4 @@
-﻿namespace Accounts.Api.Models.Configuration;
+﻿namespace Accounts.Infrastructure.Configuration;
 
 public class KeycloakOptions
 {

@@ -21,7 +21,7 @@ public static class UsersEndpoints
             .WithName("GetUser");
 
         users.MapPost("", CreateUser)
-            .WithName("CreateUser");
+            .WithName("CreateUser").RequireAuthorization();
 
         users.MapPut("/{id}", UpdateUser)
             .WithName("UpdateUser");

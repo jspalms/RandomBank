@@ -1,3 +1,6 @@
-﻿namespace Users.Application.Models;
+﻿using MediatR;
+using Users.Domain.Entities;
 
-public record CreateUserCommand(string UserEmail, string FirstName, string LastName);
+namespace Users.Application.Models;
+
+public record CreateUserCommand(string UserEmail, string FirstName, string LastName) : IRequest<User>;

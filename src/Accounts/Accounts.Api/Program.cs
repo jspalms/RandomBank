@@ -1,32 +1,18 @@
+using System.Configuration;
 using System.Reflection;
 using FluentValidation;
 using Accounts.Api.EndPoints;
 using Accounts.Api.Extensions;
 using Accounts.Application.Handlers.CommandHandlers;
+using Accounts.Infrastructure.Configuration;
 using Accounts.Infrastructure.Data;
 using Accounts.Infrastructure.Extensions;
-using Accounts.Api.Models.Configuration;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.Configure<KeycloakOptions>(builder.Configuration.GetSection("Keycloak"));
-var keycloakOptions = builder.Configuration.GetSection("Keycloak").Get<KeycloakOptions>();
-
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-.AddJwtBearer(jwtOptions =>
-{
-    jwtOptions.Authority = keycloakOptions.Authority;
-    jwtOptions.Audience = keycloakOptions.ClientId;
-    jwtOptions.MetadataAddress = keycloakOptions.MetadataAddress;
-    jwtOptions.RequireHttpsMetadata = false;
-});
-
-builder.Services.AddAuthorization();
-
 builder.Services.AddConfiguredSwagger();
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(OpenAccountCommandHandler).Assembly));
 builder.Services.AddInfrastructureServices(builder.Configuration);
@@ -37,11 +23,14 @@ var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
+    var keycloakOptions = builder.Configuration.GetSection("Keycloak")
+        .Get<KeycloakOptions>() ?? throw new ConfigurationErrorsException();
+
     app.UseSwagger();
     app.UseSwaggerUI(
         c =>
         {
-            c.OAuthClientId(keycloakOptions.ClientId); // Add your client ID here
+            c.OAuthClientId(keycloakOptions.ClientId);
             c.OAuthClientSecret(keycloakOptions.ClientSecret);
         }
     );

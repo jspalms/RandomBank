@@ -1,9 +1,8 @@
-﻿using Accounts.Infrastructure.Exceptions;
-
-namespace Accounts.Infrastructure.Events;
-
+﻿using System.Text.Json;
 using SharedKernel.Domain.Interfaces;
-using System.Text.Json;
+using Users.Infrastructure.Exceptions;
+
+namespace Users.Infrastructure.Events;
 
 public class OutboxMessage
 {

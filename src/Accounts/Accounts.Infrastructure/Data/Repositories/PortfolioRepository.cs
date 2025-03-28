@@ -5,7 +5,7 @@ using Domain.Entities;
 using Domain.Interfaces;
 using MediatR;
 
-public class PortfolioRepository(ApplicationDbContext dbContext, IMediator mediator) : BaseRepository<UserPortfolio>(dbContext, mediator), IPortfolioRepository
+public class PortfolioRepository(ApplicationDbContext dbContext) : BaseRepository<UserPortfolio>(dbContext), IPortfolioRepository
 {
 }
 

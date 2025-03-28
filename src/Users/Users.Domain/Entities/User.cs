@@ -1,5 +1,6 @@
 ﻿using SharedKernel.Domain;
 using Users.Domain.Events;
+using Users.Domain.Events.DomainEvents;
 
 namespace Users.Domain.Entities;
 
@@ -13,6 +14,6 @@ public class User : AggregateRootBase
         Email = email;
         FirstName = firstName;
         LastName = lastName;
-        AddDomainEvent(new UserCreatedEvent(Id, this));
+        AddDomainEvent(new UserCreatedEvent(this));
     }
 }

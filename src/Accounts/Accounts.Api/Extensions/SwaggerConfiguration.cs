@@ -1,6 +1,7 @@
-﻿namespace Accounts.Api.Extensions;
+﻿using Accounts.Infrastructure.Configuration;
 
-using Accounts.Api.Models.Configuration;
+namespace Accounts.Api.Extensions;
+
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 

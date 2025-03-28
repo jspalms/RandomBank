@@ -5,11 +5,13 @@ using Domain.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-public class ProductRepository(ApplicationDbContext dbContext, IMediator mediator) : BaseRepository<Product>(dbContext, mediator), IProductRepository
+public class ProductRepository(ApplicationDbContext dbContext) : BaseRepository<Product>(dbContext), IProductRepository
 {
+    private readonly ApplicationDbContext _dbContext1 = dbContext;
+
     public Task<Product?> GetProductByProductOptionIdAsync(Guid productOptionId)
     {
-        return dbContext.Products
+        return _dbContext1.Products
             .Include(p => p.ProductOptions)
             .FirstOrDefaultAsync(p => p.ProductOptions.Any(po => po.Id == productOptionId));
     }

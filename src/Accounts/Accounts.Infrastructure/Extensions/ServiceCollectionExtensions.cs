@@ -1,4 +1,7 @@
-﻿namespace Accounts.Infrastructure.Extensions;
+﻿using System.Configuration;
+using Accounts.Infrastructure.Configuration;
+
+namespace Accounts.Infrastructure.Extensions;
 
 using Data;
 using Data.Repositories;
@@ -18,6 +21,9 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IProductRepository, ProductRepository>();
         services.AddSingleton<IEventPublisher, EventPublisher>();
         services.AddHostedService<OutboxProcessor>();
+        services.Configure<KeycloakOptions>(configuration.GetSection("Keycloak"));
+        var keycloakOptions = configuration.GetSection("Keycloak").Get<KeycloakOptions>() ?? throw new ConfigurationErrorsException();
+        services.AddKeycloakAuthentication(keycloakOptions);
         
         return services;
     }

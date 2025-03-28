@@ -1,10 +1,9 @@
-﻿namespace Accounts.Infrastructure.Data.Repositories;
-
-using Accounts.Infrastructure.Events;
-using Domain.Interfaces;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using SharedKernel.Domain.Interfaces;
+using Users.Domain.Interfaces;
+using Users.Infrastructure.Events;
+
+namespace Users.Infrastructure.Data.Repositories;
 
 public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : class, IAggregateRoot
 {

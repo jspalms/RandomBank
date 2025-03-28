@@ -1,4 +1,4 @@
-﻿namespace Accounts.Infrastructure.Exceptions;
+﻿namespace Users.Infrastructure.Exceptions;
 
 internal class EventTypeException : Exception
 {
