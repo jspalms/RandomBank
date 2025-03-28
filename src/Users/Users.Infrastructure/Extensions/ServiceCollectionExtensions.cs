@@ -1,13 +1,16 @@
-﻿namespace Accounts.Infrastructure.Extensions;
-
-using Accounts.Infrastructure.Configuration;
-using Data;
-using Data.Repositories;
-using Domain.Interfaces;
+﻿using System.Configuration;
+using Accounts.Infrastructure.Events;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Users.Domain.Interfaces;
+using Users.Infrastructure.Configuration;
+using Users.Infrastructure.Data;
+using Users.Infrastructure.Data.Repositories;
+using Users.Infrastructure.Events;
 using Microsoft.Extensions.Configuration;
-using Events;
+using ConfigurationManager = Microsoft.Extensions.Configuration.ConfigurationManager;
+
+namespace Users.Infrastructure.Extensions;
 
 public static class ServiceCollectionExtensions
 {
@@ -15,12 +18,11 @@ public static class ServiceCollectionExtensions
     {
         services.AddDbContext<ApplicationDbContext>(options =>
             options.UseNpgsql(configuration.GetConnectionString("PostgresConnection")));
-        services.AddScoped<IPortfolioRepository, PortfolioRepository>();
-        services.AddScoped<IProductRepository, ProductRepository>();
+        services.AddScoped<IUserRepository, UserRepository>();
         services.AddSingleton<IEventPublisher, EventPublisher>();
         services.AddHostedService<OutboxProcessor>();
         services.Configure<KeycloakOptions>(configuration.GetSection("Keycloak"));
-        var keycloakOptions = configuration.GetSection("Keycloak").Get<KeycloakOptions>() ?? throw new Exception();
+        var keycloakOptions = configuration.GetSection("Keycloak").Get<KeycloakOptions>() ?? throw new ConfigurationErrorsException();
         services.AddKeycloakAuthentication(keycloakOptions);
         
         return services;
