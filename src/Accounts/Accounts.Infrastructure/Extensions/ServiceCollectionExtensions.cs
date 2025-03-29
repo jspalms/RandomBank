@@ -19,9 +19,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IProductRepository, ProductRepository>();
         services.AddSingleton<IEventPublisher, EventPublisher>();
         services.AddHostedService<OutboxProcessor>();
-        services.Configure<KeycloakOptions>(configuration.GetSection("Keycloak"));
-        var keycloakOptions = configuration.GetSection("Keycloak").Get<KeycloakOptions>() ?? throw new Exception();
-        services.AddKeycloakAuthentication(keycloakOptions);
+        services.AddKeycloakAuthentication(configuration);
         
         return services;
     }

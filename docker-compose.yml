@@ -56,7 +56,9 @@ services:
       KC_BOOTSTRAP_ADMIN_PASSWORD: admin
     volumes:
       - keycloak_data:/opt/keycloak/data
-    command: start-dev
+      - ./keycloak_setup.sh:/opt/keycloak/development_setup.sh
+
+    entrypoint: ["/bin/sh", "-c",  "/opt/keycloak/development_setup.sh & /opt/keycloak/bin/kc.sh start-dev"]
 
 volumes:
   postgres_data:
