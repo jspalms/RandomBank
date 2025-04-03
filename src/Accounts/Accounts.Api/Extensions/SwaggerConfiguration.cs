@@ -10,7 +10,7 @@ public static class SwaggerConfiguration
     public static IServiceCollection AddConfiguredSwagger(this IServiceCollection services)
     {
         var serviceProvider = services.BuildServiceProvider();
-        var keycloakOptions = serviceProvider.GetRequiredService<IOptions<KeycloakOptions>>().Value;
+        var keycloakOptions = serviceProvider.GetRequiredService<IOptions<KeycloakOptions>>().Value ?? throw new Exception();
 
         services.AddSwaggerGen(c =>
         {

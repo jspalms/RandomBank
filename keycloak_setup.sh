@@ -7,9 +7,10 @@ REALM_NAME="development"
 
 ACCOUNTS_CLIENT_ID="random_bank_accounts"
 ACCOUNTS_CLIENT_SECRET="accounts_client_secret"
-ACCOUNTS_BASE_URL="http://localhost:5250"
-ACCOUNTS_REDIRECT_URIS='["http://localhost:5250/callback", "http://localhost:5250/logout"]'
-ACCOUNTS_ALLOWED_ORIGINS='["http://localhost:3000"]'
+ACCOUNTS_ROOT_URL="http://localhost:5250"
+ACCOUNTS_HOME_URL="/swagger"
+ACCOUNTS_REDIRECT_URIS='["/*"]',
+ACCOUNTS_ALLOWED_ORIGINS='["+"]'
 
 USERS_CLIENT_ID="random_bank_users"
 USERS_CLIENT_SECRET="users_client_secret"
@@ -57,7 +58,8 @@ if ! kcadm.sh get clients -r ${REALM_NAME} | grep -q "\"clientId\":\"${ACCOUNTS_
   # Configure account client settings
   echo "Configuring client ${ACCOUNTS_CLIENT_ID}..."
   kcadm.sh update clients/${ACCOUNTS_CLIENT_ID_INTERNAL} -r ${REALM_NAME} \
-    -s baseUrl="${ACCOUNTS_BASE_URL}" \
+    -s baseUrl="${ACCOUNTS_HOME_URL}" \
+    -s rootUrl = "${ACCOUNTS_ROOT_URL}" \
     -s 'redirectUris='"${ACCOUNTS_REDIRECT_URIS}"'' \
     -s 'webOrigins='"${ACCOUNTS_ALLOWED_ORIGINS}"''
 fi

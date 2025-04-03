@@ -13,9 +13,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddConfiguredSwagger();
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(OpenAccountCommandHandler).Assembly));
-builder.Services.AddInfrastructureServices(builder.Configuration);
 
 var app = builder.Build();
 
