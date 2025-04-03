@@ -9,14 +9,15 @@ ACCOUNTS_CLIENT_ID="random_bank_accounts"
 ACCOUNTS_CLIENT_SECRET="accounts_client_secret"
 ACCOUNTS_ROOT_URL="http://localhost:5250"
 ACCOUNTS_HOME_URL="/swagger"
-ACCOUNTS_REDIRECT_URIS='["/*"]',
+ACCOUNTS_REDIRECT_URIS='["/*"]'
 ACCOUNTS_ALLOWED_ORIGINS='["+"]'
 
 USERS_CLIENT_ID="random_bank_users"
 USERS_CLIENT_SECRET="users_client_secret"
 USERS_BASE_URL="http://localhost:5293"
-USERS_REDIRECT_URIS='["http://localhost:5293/callback", "http://localhost:5293/logout"]'
-USERS_ALLOWED_ORIGINS='["http://localhost:5293"]'
+USERS_HOME_URL="/swagger"
+USERS_REDIRECT_URIS='["/*"]'
+USERS_ALLOWED_ORIGINS='["+"]'
 
 
 # Ensure kcadm.sh is accessible
@@ -37,6 +38,10 @@ if ! kcadm.sh get realms | grep -q "\"id\":\"${REALM_NAME}\""; then
   kcadm.sh create realms -s realm=${REALM_NAME} -s enabled=true
 fi
 
+# Enable user registration in the development realm
+echo "Enabling user registration in realm ${REALM_NAME}..."
+kcadm.sh update realms/${REALM_NAME} -s 'registrationAllowed=true'
+
 # Check if the user client exists, create it if not
 if ! kcadm.sh get clients -r ${REALM_NAME} | grep -q "\"clientId\":\"${USERS_CLIENT_ID}\""; then
   echo "Creating client ${USERS_CLIENT_ID}..."
@@ -45,9 +50,13 @@ if ! kcadm.sh get clients -r ${REALM_NAME} | grep -q "\"clientId\":\"${USERS_CLI
   # Configure user client settings
   echo "Configuring client ${USERS_CLIENT_ID}..."
   kcadm.sh update clients/${USERS_CLIENT_ID_INTERNAL} -r ${REALM_NAME} \
-    -s baseUrl="${USERS_BASE_URL}" \
-    -s 'redirectUris='"${USERS_REDIRECT_URIS}"'' \
-    -s 'webOrigins='"${USERS_ALLOWED_ORIGINS}"''
+    -s name="Random Users" \
+    -s description="Client for managing user-related operations in Random Bank" \
+    -s rootUrl="${USERS_BASE_URL}" \
+    -s baseUrl="${USERS_HOME_URL}" \
+    -s "redirectUris=${USERS_REDIRECT_URIS}" \
+    -s "webOrigins=${USERS_ALLOWED_ORIGINS}" \
+    -s 'attributes."access.token.audience"'='["${USERS_CLIENT_ID}"]'
 fi
 
 # Check if the account client exists, create it if not
@@ -58,8 +67,11 @@ if ! kcadm.sh get clients -r ${REALM_NAME} | grep -q "\"clientId\":\"${ACCOUNTS_
   # Configure account client settings
   echo "Configuring client ${ACCOUNTS_CLIENT_ID}..."
   kcadm.sh update clients/${ACCOUNTS_CLIENT_ID_INTERNAL} -r ${REALM_NAME} \
+    -s name="Random Accounts" \
+    -s description="Client for managing account-related operations in Random Bank" \
+    -s rootUrl="${ACCOUNTS_ROOT_URL}" \
     -s baseUrl="${ACCOUNTS_HOME_URL}" \
-    -s rootUrl = "${ACCOUNTS_ROOT_URL}" \
-    -s 'redirectUris='"${ACCOUNTS_REDIRECT_URIS}"'' \
-    -s 'webOrigins='"${ACCOUNTS_ALLOWED_ORIGINS}"''
+    -s "redirectUris=${ACCOUNTS_REDIRECT_URIS}" \
+    -s "webOrigins=${ACCOUNTS_ALLOWED_ORIGINS}" \
+    -s 'attributes."access.token.audience"'='["${ACCOUNTS_CLIENT_ID}"]'
 fi

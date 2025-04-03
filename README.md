@@ -27,13 +27,12 @@ Admin can add and edit products i.e. a kind of bank account
 
 ## Things to add
 
-1. Add kafka to produce integration event off the back of a domain event
-2. Add the second application which will be purely event driven
-3. Consume event and "product a notification"
-4. Add some endpoint with an authentification policy
-5. Setup keycloak
-6. Setup swagger to authenticate via keycloak
-7. Containerise it
+1. Finish keycloak setup
+2. Add kafka to produce integration event off the back of a domain event
+3. Add some endpoint with an authentication policy
+4. Containerise it
+5. Finish the readme
+6. Add a frontend?
 
 ### Potential technologies to look into
 
