@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Models;
 using System.Security.Claims;
 using Users.Api.Utilities;
+using Users.Domain.ValueObjects;
 
 public static class UsersEndpoints
 {
@@ -30,7 +31,6 @@ public static class UsersEndpoints
             .WithName("DeleteUser");
     }
     
-
     private static object[] GetUsers()
     {
         return new[] { new { Id = 1, Name = "Account 1" }, new { Id = 2, Name = "Account 2" } };
@@ -48,14 +48,15 @@ public static class UsersEndpoints
         var firstName = ClaimsHelper.GetFirstName(userClaims);
         var lastName = ClaimsHelper.GetLastName(userClaims);
         var userEmail = ClaimsHelper.GetEmail(userClaims);
+        var userId = ClaimsHelper.GetUserId(userClaims);
 
-        if(string.IsNullOrWhiteSpace(firstName) || string.IsNullOrWhiteSpace(lastName) || string.IsNullOrWhiteSpace(userEmail))
+        if (string.IsNullOrWhiteSpace(firstName) || string.IsNullOrWhiteSpace(lastName) || string.IsNullOrWhiteSpace(userEmail) || userId is null)
         {
             return TypedResults.BadRequest("User claims are missing required information");
         }
 
 
-        var command = new CreateUserCommand(firstName, lastName, userEmail);
+        var command = new CreateUserCommand(userId.Value, firstName, lastName, new Email(userEmail));
 
         var result = await mediator.Send(command);
 

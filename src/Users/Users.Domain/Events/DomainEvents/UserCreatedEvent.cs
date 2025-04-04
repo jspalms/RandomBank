@@ -4,7 +4,7 @@ using Users.Domain.Entities;
 
 namespace Users.Domain.Events.DomainEvents;
 
-public record UserCreatedEvent(User User) : DomainEventBase(User.Id), INotification
+public record UserCreatedEvent(Guid Id) : DomainEventBase(Id), INotification
 {
 }
 

@@ -18,7 +18,7 @@ public static class AuthenticationExtensions
             .AddJwtBearer(jwtOptions =>
             {
                 jwtOptions.Authority = keycloakOptions.Authority;
-                jwtOptions.Audience = keycloakOptions.ClientId;
+                jwtOptions.Audience = keycloakOptions.Audience;
                 jwtOptions.MetadataAddress = keycloakOptions.MetadataAddress;
                 jwtOptions.RequireHttpsMetadata = false;
             });

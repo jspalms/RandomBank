@@ -10,5 +10,9 @@ public class UserPortfolioConfiguration : IEntityTypeConfiguration<UserPortfolio
     {
         builder.Property("VersionNumber").IsConcurrencyToken();
         builder.OwnsOne(p => p.UserISALimits);
+
+        builder.HasMany(p => p.UserAccounts)
+            .WithOne(a => a.UserPortfolio)
+            .HasForeignKey(a => a.UserPortfolioId);
     }
 }

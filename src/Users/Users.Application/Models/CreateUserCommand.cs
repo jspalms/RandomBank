@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Users.Domain.Entities;
+using Users.Domain.ValueObjects;
 
 namespace Users.Application.Models;
 
-public record CreateUserCommand(string UserEmail, string FirstName, string LastName) : IRequest<User>;
+public record CreateUserCommand(Guid userId, string FirstName, string LastName, Email UserEmail) : IRequest<User>;

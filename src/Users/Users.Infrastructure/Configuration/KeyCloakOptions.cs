@@ -8,4 +8,5 @@ public class KeycloakOptions
     public string ClientSecret { get; set; }
     public string Authority { get; set; }
     public string MetadataAddress { get; set; }
+    public string Audience { get; init; } = "account";
 }

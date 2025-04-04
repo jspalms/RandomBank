@@ -56,7 +56,6 @@ if ! kcadm.sh get clients -r ${REALM_NAME} | grep -q "\"clientId\":\"${USERS_CLI
     -s baseUrl="${USERS_HOME_URL}" \
     -s "redirectUris=${USERS_REDIRECT_URIS}" \
     -s "webOrigins=${USERS_ALLOWED_ORIGINS}" \
-    -s 'attributes."access.token.audience"'='["${USERS_CLIENT_ID}"]'
 fi
 
 # Check if the account client exists, create it if not
@@ -73,5 +72,4 @@ if ! kcadm.sh get clients -r ${REALM_NAME} | grep -q "\"clientId\":\"${ACCOUNTS_
     -s baseUrl="${ACCOUNTS_HOME_URL}" \
     -s "redirectUris=${ACCOUNTS_REDIRECT_URIS}" \
     -s "webOrigins=${ACCOUNTS_ALLOWED_ORIGINS}" \
-    -s 'attributes."access.token.audience"'='["${ACCOUNTS_CLIENT_ID}"]'
 fi

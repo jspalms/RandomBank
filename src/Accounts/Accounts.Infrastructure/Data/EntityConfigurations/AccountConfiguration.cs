@@ -13,6 +13,5 @@ public class AccountConfiguration: IEntityTypeConfiguration<Account>
         builder.HasDiscriminator<AccountType>(x => x.AccountType)
             .HasValue<FixedISAAccount>(AccountType.FixedSavingsAccount)
             .HasValue<VariableISAAccount>(AccountType.VariableSavingsAccount);
-
     }
 }

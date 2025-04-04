@@ -16,4 +16,5 @@ public class KeycloakOptions
     public string Authority { get; set; }
     [Required]
     public string MetadataAddress { get; set; }
+    public string Audience { get; init; } = "account";
 }
