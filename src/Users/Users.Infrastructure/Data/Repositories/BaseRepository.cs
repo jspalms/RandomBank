@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SharedKernel.Domain.Interfaces;
 using Users.Domain.Interfaces;
-using Users.Infrastructure.Events;
+using Users.Infrastructure.Events.DomainEvents;
 
 namespace Users.Infrastructure.Data.Repositories;
 

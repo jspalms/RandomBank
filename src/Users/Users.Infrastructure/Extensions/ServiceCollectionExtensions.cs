@@ -1,14 +1,13 @@
-﻿using System.Configuration;
-using Accounts.Infrastructure.Events;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Users.Domain.Interfaces;
-using Users.Infrastructure.Configuration;
 using Users.Infrastructure.Data;
 using Users.Infrastructure.Data.Repositories;
-using Users.Infrastructure.Events;
 using Microsoft.Extensions.Configuration;
 using ConfigurationManager = Microsoft.Extensions.Configuration.ConfigurationManager;
+using Users.Infrastructure.Events.DomainEvents;
+using Users.Application.Interfaces;
+using Users.Infrastructure.Events.IntegrationEvents;
 
 namespace Users.Infrastructure.Extensions;
 
@@ -20,6 +19,7 @@ public static class ServiceCollectionExtensions
             options.UseNpgsql(configuration.GetConnectionString("PostgresConnection")));
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddSingleton<IEventPublisher, EventPublisher>();
+        
         services.AddHostedService<OutboxProcessor>();
         services.AddKeycloakAuthentication(configuration);
         

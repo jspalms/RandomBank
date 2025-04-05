@@ -1,11 +1,10 @@
-﻿using Accounts.Infrastructure.Events;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Users.Infrastructure.Data;
 
-namespace Users.Infrastructure.Events;
+namespace Users.Infrastructure.Events.DomainEvents;
 
 public class OutboxProcessor : BackgroundService
 {

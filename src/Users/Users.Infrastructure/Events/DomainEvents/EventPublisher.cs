@@ -1,10 +1,9 @@
 ﻿using System.Text.Json;
-using Accounts.Infrastructure.Events;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using Users.Infrastructure.Exceptions;
 
-namespace Users.Infrastructure.Events;
+namespace Users.Infrastructure.Events.DomainEvents;
 
 public class EventPublisher : IEventPublisher
 {

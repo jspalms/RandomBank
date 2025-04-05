@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Users.Domain.Entities;
-using Users.Infrastructure.Events;
+using Users.Infrastructure.Events.DomainEvents;
 
 namespace Users.Infrastructure.Data;
 

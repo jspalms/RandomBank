@@ -7,6 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="Confluent.Kafka" Version="2.9.0" />
       <PackageReference Include="MediatR" Version="12.4.1" />
       <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.14" />
       <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.0" />
@@ -20,6 +21,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\SharedKernel\SharedKernel\SharedKernel.csproj" />
+      <ProjectReference Include="..\Users.Application\Users.Application.csproj" />
       <ProjectReference Include="..\Users.Domain\Users.Domain.csproj" />
     </ItemGroup>
 

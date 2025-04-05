@@ -2,7 +2,7 @@
 using SharedKernel.Domain.Interfaces;
 using Users.Infrastructure.Exceptions;
 
-namespace Users.Infrastructure.Events;
+namespace Users.Infrastructure.Events.DomainEvents;
 
 public class OutboxMessage
 {
