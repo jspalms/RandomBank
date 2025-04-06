@@ -7,9 +7,9 @@ using Users.Domain.Events.DomainEvents;
 namespace Users.Application.Handlers.DomainEventHandlers;
 
 public class UserCreatedEventHandler(ILogger<UserCreatedEventHandler> logger,
-IEventBus eventBus) : INotificationHandler<Domain.Events.DomainEvents.UserCreatedEvent>
+IEventBus eventBus) : INotificationHandler<UserCreatedEvent>
 {
-    public async Task Handle(Domain.Events.DomainEvents.UserCreatedEvent notification, CancellationToken cancellationToken)
+    public async Task Handle(UserCreatedEvent notification, CancellationToken cancellationToken)
     {
         logger.LogInformation("Handled UserCreatedEvent");
         

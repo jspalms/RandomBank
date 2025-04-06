@@ -57,7 +57,7 @@ services:
     volumes:
       - keycloak_data:/opt/keycloak/data
       - ./keycloak_setup.sh:/opt/keycloak/development_setup.sh
-    entrypoint: ["/bin/sh", "-c", "/opt/keycloak/development_setup.sh & /opt/keycloak/bin/kc.sh start-dev"]
+    entrypoint: ["/bin/sh", "-c", "chmod +x /opt/keycloak/development_setup.sh; /opt/keycloak/development_setup.sh & /opt/keycloak/bin/kc.sh start-dev"]
 
 volumes:
   postgres_data:

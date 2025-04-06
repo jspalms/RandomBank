@@ -18,12 +18,15 @@ public class OutboxMessage
     {
 
     }
+    
+  
 
     public OutboxMessage(IDomainEvent domainEvent)
     {
         Id = domainEvent.EventId;
         Type = domainEvent.GetType().AssemblyQualifiedName ?? throw new EventTypeException("No assembly qualified name found for domain event type");
-        Payload = JsonSerializer.Serialize(domainEvent);
+        //Must cast to an object to preserved properties from derived classes
+        Payload = JsonSerializer.Serialize((object)domainEvent);
         OccurredOn = domainEvent.CreatedOn;
     }
 }

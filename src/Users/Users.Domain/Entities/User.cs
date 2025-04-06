@@ -10,7 +10,7 @@ public class User : AggregateRootBase
     public Email Email { get; private set; }
     public string FirstName { get; private set; }
     public string LastName { get; private set; }
-    
+    //parameterless constructor for EF
     private User() { }
     public User(Guid id, Email email, string firstName, string lastName)
     {
