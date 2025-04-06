@@ -1,3 +1,5 @@
+using SharedKernel.IntegrationEvents;
+
 namespace SharedKernel.Domain.Interfaces;
 
 public interface IIntegrationEventWithKey : IIntegrationEvent

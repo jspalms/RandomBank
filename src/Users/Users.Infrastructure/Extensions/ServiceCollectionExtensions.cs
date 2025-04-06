@@ -22,7 +22,8 @@ public static class ServiceCollectionExtensions
         
         services.AddHostedService<OutboxProcessor>();
         services.AddKeycloakAuthentication(configuration);
+        services.AddKafkaProducer(configuration);
         
         return services;
     }
-}
+};

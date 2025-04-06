@@ -11,7 +11,10 @@ class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property("VersionNumber").IsConcurrencyToken();
         builder.OwnsOne(u => u.Email, email =>
         {
-            email.Property(e => e.Value).HasColumnName("Email").IsRequired();
+            email
+                .Property(e => e.Value)
+                .HasColumnName("Email")
+                .IsRequired();
         });
     }
 }
