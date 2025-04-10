@@ -19,8 +19,6 @@ public class OutboxMessage
 
     }
     
-  
-
     public OutboxMessage(IDomainEvent domainEvent)
     {
         Id = domainEvent.EventId;
