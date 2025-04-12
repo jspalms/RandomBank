@@ -1,4 +1,9 @@
-﻿namespace Users.Api.Endponts;
+﻿using Microsoft.AspNetCore.Mvc;
+using Users.Application.Models.Commands;
+using Users.Application.Models.Queries;
+using Users.Domain.Entities;
+
+namespace Users.Api.Endponts;
 
 using Application.Models;
 using FluentValidation;
@@ -23,6 +28,9 @@ public static class UsersEndpoints
 
         users.MapPost("", CreateUser)
             .WithName("CreateUser").RequireAuthorization();
+        
+        users.MapPost("WithoutAuth", CreateUserWithoutAuth)
+            .WithName("CreateUser");
 
         users.MapPut("/{id}", UpdateUser)
             .WithName("UpdateUser");
@@ -31,14 +39,19 @@ public static class UsersEndpoints
             .WithName("DeleteUser");
     }
     
-    private static object[] GetUsers()
+    private static async Task<Results<Ok<List<User>>, BadRequest<string>>> GetUsers(
+        IMediator mediator)
     {
-        return new[] { new { Id = 1, Name = "Account 1" }, new { Id = 2, Name = "Account 2" } };
+        var result = await mediator.Send(new GetUsersQuery());
+        return TypedResults.Ok(result);
     }
 
-    private static object GetUser(int id)
+    private static async Task<Results<Ok<User>, BadRequest<string>>> GetUser(
+        Guid id,
+        IMediator mediator)
     {
-        return new { Id = id, Name = $"Product {id}" };
+        var result = await mediator.Send(new GetUserQuery(id));
+        return TypedResults.Ok(result);
     }
 
     private static async Task<Results<Created, BadRequest<string>>> CreateUser(
@@ -63,14 +76,37 @@ public static class UsersEndpoints
         return TypedResults.Created($"/{result}");
     }
 
-    private static object UpdateUser(int id, object product)
+    private static async Task<Results<Ok, BadRequest>> UpdateUser(
+        UpdateUserRequest request,
+        IMediator mediator)
     {
-        return Results.Ok(product);
+        var command = new UpdateUserCommand(request.Id, request.FirstName, request.LastName, new Email(request.Email));
+        await mediator.Send(command);
+        return TypedResults.Ok();
     }
 
-    private static object DeleteUser(int id)
+    private static async Task<Results<NoContent, BadRequest>> DeleteUser(
+        Guid id,
+        IMediator mediator)
     {
-        return Results.NoContent();
+        await mediator.Send(new DeleteUserCommand(id));
+        return TypedResults.BadRequest();
+    }
+    
+    public static async Task<Results<Created, BadRequest<string>>> CreateUserWithoutAuth(
+        CreateUserRequest createUserRequest,
+        IMediator mediator)
+    {
+        var firstName = createUserRequest.FirstName;
+        var lastName = createUserRequest.LastName;
+        var userEmail = createUserRequest.UserEmail;
+        var userId = createUserRequest.UserId;
+
+        var command = new CreateUserCommand(userId, firstName, lastName, new Email(userEmail));
+
+        var result = await mediator.Send(command);
+
+        return TypedResults.Created($"/{result}");
     }
     
 }

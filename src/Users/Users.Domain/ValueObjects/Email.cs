@@ -18,7 +18,6 @@ public sealed class Email
     {
         return Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$");
     }
-
     public override string ToString() => Value;
     public override bool Equals(object? obj) => obj is Email e && e.Value == Value;
     public override int GetHashCode() => Value.GetHashCode();
