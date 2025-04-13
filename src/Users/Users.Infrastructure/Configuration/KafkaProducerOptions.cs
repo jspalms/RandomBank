@@ -2,7 +2,7 @@
 
 class KafkaProducerOptions
 {
-    // User-specific properties that you must set
+    // Application-specific properties
     public string BootstrapServers { get; set; }
     public string SaslUsername { get; set; }
     public string SaslPassword { get; set; }

@@ -14,7 +14,6 @@ class KafkaEventBus(ProducerConfig producerConfig) : IEventBus
 
     public async Task PublishAsync<T>(T @event, CancellationToken cancellationToken = default) where T : IIntegrationEvent
     {
-
         using var producer = new ProducerBuilder<Null, string>(producerConfig).Build();
         //Could have more granular topics e.g. one for each event type
         //var topic = @event.GetType().Name;

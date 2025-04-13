@@ -30,7 +30,7 @@ public static class UsersEndpoints
             .WithName("CreateUser").RequireAuthorization();
         
         users.MapPost("WithoutAuth", CreateUserWithoutAuth)
-            .WithName("CreateUser");
+            .WithName("CreateUserWithoutAuth");
 
         users.MapPut("/{id}", UpdateUser)
             .WithName("UpdateUser");
@@ -51,6 +51,10 @@ public static class UsersEndpoints
         IMediator mediator)
     {
         var result = await mediator.Send(new GetUserQuery(id));
+        if (result is null)
+        {
+            return TypedResults.BadRequest($"User with id {id} not found");
+        }
         return TypedResults.Ok(result);
     }
 
@@ -94,7 +98,7 @@ public static class UsersEndpoints
         return TypedResults.BadRequest();
     }
     
-    public static async Task<Results<Created, BadRequest<string>>> CreateUserWithoutAuth(
+    private static async Task<Results<Created, BadRequest<string>>> CreateUserWithoutAuth(
         CreateUserRequest createUserRequest,
         IMediator mediator)
     {
@@ -109,5 +113,4 @@ public static class UsersEndpoints
 
         return TypedResults.Created($"/{result}");
     }
-    
 }
