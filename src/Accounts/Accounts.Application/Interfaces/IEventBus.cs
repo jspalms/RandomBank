@@ -1,10 +1,10 @@
-using SharedKernel.Domain.Interfaces;
-using SharedKernel.IntegrationEvents;
+﻿using SharedKernel.IntegrationEvents;
 
-namespace Users.Application.Interfaces;
+namespace Accounts.Application.Interfaces;
 
 public interface IEventBus
 {
     Task PublishAsync<T>(T @event, CancellationToken cancellationToken) where T : IIntegrationEvent;
     Task ConsumeTopicsAsync(List<string> topics, CancellationToken cancellationToken);
+
 }

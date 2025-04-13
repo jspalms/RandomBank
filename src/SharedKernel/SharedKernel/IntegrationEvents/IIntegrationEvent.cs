@@ -3,6 +3,8 @@
 public interface IIntegrationEvent
 {
     Guid EventId { get; }
-    DateTime CreatedOn { get; }
+    DateTimeOffset CreatedOn { get; }
+    string EventTypeName { get; }
+    string Payload { get; }
 }
 

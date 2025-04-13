@@ -79,7 +79,7 @@ namespace Accounts.Infrastructure.Data.Migrations
                     b.Property<string>("Reference")
                         .HasColumnType("text");
 
-                    b.Property<int>("Type")
+                    b.Property<int>("EventTypeName")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");

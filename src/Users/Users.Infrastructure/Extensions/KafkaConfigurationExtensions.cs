@@ -16,6 +16,11 @@ public static class KafkaConfigurationExtensions
             .Bind(configuration.GetSection("KafkaProducer"))
             .ValidateDataAnnotations()
             .ValidateOnStart();
+        
+        services.AddOptions<KafkaConsumerOptions>()
+            .Bind(configuration.GetSection("KafkaConsumer"))
+            .ValidateDataAnnotations()
+            .ValidateOnStart();
 
         // Register ProducerConfig
         services.AddSingleton(provider =>
@@ -27,10 +32,28 @@ public static class KafkaConfigurationExtensions
                 ClientId = kafkaProducerOptions.ClientId,
                 SaslUsername = kafkaProducerOptions.SaslUsername,
                 SaslPassword = kafkaProducerOptions.SaslPassword,
-                SecurityProtocol = SecurityProtocol.SaslSsl,
+                SecurityProtocol = SecurityProtocol.Plaintext,
                 SaslMechanism = SaslMechanism.Plain,
                 Acks = Acks.All,
                 EnableIdempotence = true
+            };
+        });
+        
+        // Register ConsumerConfig
+        services.AddSingleton(provider =>
+        {
+            var kafkaConsumerOptions = provider.GetRequiredService<IOptions<KafkaConsumerOptions>>().Value;
+            return new ConsumerConfig
+            {
+                BootstrapServers = kafkaConsumerOptions.BootstrapServers,
+                GroupId = kafkaConsumerOptions.GroupId,
+                EnableAutoOffsetStore = false,
+                EnableAutoCommit = true,
+                StatisticsIntervalMs = 5000,
+                SessionTimeoutMs = 6000,
+                AutoOffsetReset = AutoOffsetReset.Earliest,
+                EnablePartitionEof = true,
+                PartitionAssignmentStrategy = PartitionAssignmentStrategy.CooperativeSticky
             };
         });
 

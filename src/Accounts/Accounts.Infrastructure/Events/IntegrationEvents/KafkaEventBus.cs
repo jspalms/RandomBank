@@ -1,21 +1,16 @@
-﻿using Confluent.Kafka;
-using System.Text.Json;
+﻿using System.Text.Json;
+using Accounts.Application.Interfaces;
+using Confluent.Kafka;
 using Microsoft.Extensions.DependencyInjection;
 using SharedKernel.IntegrationEvents;
-using Users.Application.Interfaces;
 
-namespace Users.Infrastructure.Events.IntegrationEvents;
+namespace Accounts.Infrastructure.Events.IntegrationEvents;
 
-class KafkaEventBus(IServiceProvider serviceProvider) : IEventBus
+public class KafkaEventBus(ProducerConfig producerConfig, ServiceProvider serviceProvider) : IEventBus
 {
-    private readonly ProducerConfig _producerConfig = serviceProvider.GetRequiredService<ProducerConfig>();
-    private readonly ConsumerConfig _consumerConfig = serviceProvider.GetRequiredService<ConsumerConfig>();
-
-    // How can I exposure being able to publish with or without a key without leaking the implementation details?
-
     public async Task PublishAsync<T>(T @event, CancellationToken cancellationToken = default) where T : IIntegrationEvent
     {
-        using var producer = new ProducerBuilder<Null, string>(_producerConfig).Build();
+        using var producer = new ProducerBuilder<Null, string>(producerConfig).Build();
         //Could have more granular topics e.g. one for each event type
         //var topic = @event.GetType().Name;
         var topic = "users-events";
@@ -24,9 +19,8 @@ class KafkaEventBus(IServiceProvider serviceProvider) : IEventBus
         await producer.ProduceAsync(topic, new Message<Null, string> { Value = payload }, cancellationToken);
     }
 
-    public async Task ConsumeTopicsAsync(List<string> topics, CancellationToken cancellationToken)
+     public async Task ConsumeTopicsAsync(List<string> topics, CancellationToken cancellationToken)
     {
-        //can use the _consumerConfig from DI
             var config = new ConsumerConfig
             {
                 BootstrapServers = "localhost:9092",
@@ -78,7 +72,6 @@ class KafkaEventBus(IServiceProvider serviceProvider) : IEventBus
             }
             catch (OperationCanceledException)
             {
-                // Ensure the consumer leaves the group cleanly and final offsets are committed.
                 consumer.Close();
             }
     }
