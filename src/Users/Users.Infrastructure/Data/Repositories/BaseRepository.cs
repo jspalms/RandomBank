@@ -15,7 +15,7 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
         _dbContext = dbContext;
     }
 
-    public Task<bool> ExistsAsync(Guid id)
+    public Task<bool> ExistsAsync(Guid id, CancellationToken cancellationToken)
     {
         return _dbContext.Set<TEntity>().AnyAsync(e => e.Id == id);
     }
@@ -29,6 +29,13 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
     {
         return await _dbContext.Set<TEntity>().ToListAsync();
     }
+    
+    public async Task<TEntity?> GetByIdWithDeletedAsync(Guid id, CancellationToken cancellationToken = default)
+    {
+        return await _dbContext.Set<TEntity>()
+            .IgnoreQueryFilters()
+            .FirstOrDefaultAsync(e => e.Id == id, cancellationToken);
+    }
 
     public async Task AddAsync(TEntity entity)
     {
@@ -40,7 +47,7 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
         _dbContext.Set<TEntity>().Remove(entity);
     }
 
-    public async Task SaveChangesAsync()
+    public async Task SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         //increment version of all aggregate roots for concurrency checking
         foreach (var entry in _dbContext.ChangeTracker.Entries<IAggregateRoot>())
@@ -64,10 +71,6 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
             .SelectMany(x => x.Entity.DomainEvents)
             .Select(domainEvent => new OutboxMessage(domainEvent)));
 
-        await _dbContext.SaveChangesAsync();
-
-        //dispatching domain events after saving changes - ensures that the events are not dispatched if the database operation fails
-        //trade off - means that the changes to other aggregates are not transactional - need to deal with eventual consistency
-        //await _mediator.DispatchDomainEvents(_dbContext);
+        await _dbContext.SaveChangesAsync(cancellationToken);
     }
 }

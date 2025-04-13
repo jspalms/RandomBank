@@ -1,3 +1,5 @@
-﻿namespace Users.Application.Models.Commands;
+﻿using MediatR;
 
-public record DeleteUserCommand(Guid Id);
+namespace Users.Application.Models.Commands;
+
+public record DeleteUserCommand(Guid Id) : IRequest;

@@ -16,6 +16,8 @@ class UserConfiguration : IEntityTypeConfiguration<User>
                 .HasColumnName("Email")
                 .IsRequired();
         });
+        builder.HasIndex(u => u.DeletedAt);
+        builder.HasQueryFilter(x => x.DeletedAt == null);
     }
 }
 

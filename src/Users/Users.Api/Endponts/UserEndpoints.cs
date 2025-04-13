@@ -87,9 +87,10 @@ public static class UsersEndpoints
 
     private static async Task<Results<NoContent, BadRequest>> DeleteUser(
         Guid id,
-        IMediator mediator)
+        IMediator mediator,
+        CancellationToken cancellationToken)
     {
-        await mediator.Send(new DeleteUserCommand(id));
+        await mediator.Send(new DeleteUserCommand(id), cancellationToken);
         return TypedResults.BadRequest();
     }
     

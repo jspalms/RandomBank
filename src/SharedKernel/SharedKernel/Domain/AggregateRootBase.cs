@@ -5,6 +5,7 @@ using Interfaces;
 public abstract class AggregateRootBase: IAggregateRoot
 {
     public Guid Id { get; protected set; }
+    public DateTimeOffset? DeletedAt { get; set; }
     private int VersionNumber { get; set; }
     private List<IDomainEvent> _domainEvents { get; } = [];
     public IReadOnlyList<IDomainEvent> DomainEvents => _domainEvents.AsReadOnly();

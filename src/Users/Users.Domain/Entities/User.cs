@@ -21,4 +21,16 @@ public class User : AggregateRootBase
         LastName = lastName;
         AddDomainEvent(new UserCreatedEvent(Id, FirstName, LastName, Email));
     }
+    public void UpdateUser(string firstName, string lastName, Email email)
+    {
+        FirstName = firstName;
+        LastName = lastName;
+        Email = email;
+        AddDomainEvent(new UserUpdatedEvent(Id, FirstName, LastName, Email));
+    }
+    public void DeleteUser()
+    {
+        DeletedAt = DateTimeOffset.UtcNow;
+        AddDomainEvent(new UserDeletedEvent(Id));
+    }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SharedKernel.Domain;
 using Users.Domain.Entities;
 using Users.Infrastructure.Events.DomainEvents;
 
@@ -17,6 +18,8 @@ public class ApplicationDbContext : DbContext
     {
         modelBuilder.HasDefaultSchema("Users");
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
+        //Generic method to apply soft delete filter isn't nice so don't at the derived class level
+      
     }
     
 }
