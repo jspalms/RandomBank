@@ -13,12 +13,12 @@ public static class KafkaConfigurationExtensions
     public static IServiceCollection AddKafkaProducer(this IServiceCollection services, ConfigurationManager configuration)
     {
         services.AddOptions<KafkaProducerOptions>()
-            .Bind(configuration.GetSection("KafkaProducer"))
+            .Bind(configuration.GetSection("Kafka:ProducerOptions"))
             .ValidateDataAnnotations()
             .ValidateOnStart();
         
         services.AddOptions<KafkaConsumerOptions>()
-            .Bind(configuration.GetSection("KafkaConsumer"))
+            .Bind(configuration.GetSection("Kafka:ConsumerOptions"))
             .ValidateDataAnnotations()
             .ValidateOnStart();
 
