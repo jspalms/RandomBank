@@ -36,7 +36,7 @@ class KafkaEventBus(IServiceProvider serviceProvider, ILogger<KafkaEventBus> log
         //can use the _consumerConfig from DI
         var config = new ConsumerConfig
         {
-            BootstrapServers = "localhost:9092",
+            BootstrapServers = "host.docker.internal:9092",
             GroupId = "random_users",
             EnableAutoOffsetStore = false,
             EnableAutoCommit = true,
