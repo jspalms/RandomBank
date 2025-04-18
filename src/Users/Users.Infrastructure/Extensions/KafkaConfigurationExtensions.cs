@@ -53,7 +53,8 @@ public static class KafkaConfigurationExtensions
                 SessionTimeoutMs = 6000,
                 AutoOffsetReset = AutoOffsetReset.Earliest,
                 EnablePartitionEof = true,
-                PartitionAssignmentStrategy = PartitionAssignmentStrategy.CooperativeSticky
+                PartitionAssignmentStrategy = PartitionAssignmentStrategy.CooperativeSticky,
+                AllowAutoCreateTopics = true
             };
         });
 

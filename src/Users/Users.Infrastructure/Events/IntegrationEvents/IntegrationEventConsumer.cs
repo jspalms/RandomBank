@@ -7,6 +7,8 @@ public class IntegrationEventConsumer(IEventBus eventBus) : BackgroundService
 { 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
+        //Need to yield to not block the main thread might be a better way
+        await Task.Yield();
         await eventBus.ConsumeTopicsAsync(stoppingToken);
     }
 }

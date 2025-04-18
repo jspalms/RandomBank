@@ -20,10 +20,11 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddSingleton<IEventPublisher, EventPublisher>();
         
-        services.AddHostedService<OutboxProcessor>();
         services.AddKeycloakAuthentication(configuration);
         services.AddKafkaProducer(configuration);
         services.AddHostedService<IntegrationEventConsumer>();
+        services.AddHostedService<OutboxProcessor>();
+
         
         return services;
     }

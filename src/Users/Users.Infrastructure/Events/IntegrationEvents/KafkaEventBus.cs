@@ -50,7 +50,7 @@ class KafkaEventBus(IServiceProvider serviceProvider, ILogger<KafkaEventBus> log
 
         using var consumer = new ConsumerBuilder<Ignore, string>(config)
             .SetErrorHandler((_, e) => Console.WriteLine($"Error: {e.Reason}"))
-            .SetStatisticsHandler((_, json) => Console.WriteLine($"Statistics: {json}"))
+            // .SetStatisticsHandler((_, json) => Console.WriteLine($"Statistics: {json}"))
             .Build();
         
         consumer.Subscribe(topics);
@@ -74,7 +74,7 @@ class KafkaEventBus(IServiceProvider serviceProvider, ILogger<KafkaEventBus> log
                     logger.LogInformation("KafkaEventBus: Consumed Event of type: {EventType}", eventType);
 
                     var handlerType = typeof(IIntegrationEventHandler<>).MakeGenericType(eventType);
-                    dynamic handler = serviceProvider.GetService(handlerType);
+                    dynamic? handler = serviceProvider.GetService(handlerType);
                     if (handler != null)
                     {
                         await handler.HandleAsync(baseEvent, cancellationToken);
