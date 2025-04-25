@@ -44,13 +44,14 @@ services:
     depends_on:
       - broker
 
-  broker-tools:
+  kafka-init:
     image: confluentinc/cp-kafka:latest
-    container_name: kafka-tools
+    container_name: kafka-init
+    volumes:
+      - ./kafka_init.sh:/kafka_init.sh
     depends_on:
       - broker
-    entrypoint: /bin/sh
-    tty: true
+    entrypoint: ["/bin/sh", "-c", "/kafka_init.sh"]
 
   keycloak:
     image: quay.io/keycloak/keycloak:latest

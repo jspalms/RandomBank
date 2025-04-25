@@ -12,7 +12,7 @@ public abstract class Account
     public decimal Balance { get; set; }
     public DateTime CreatedAt { get; private set; }
     public DateTime UpdatedAt { get; private set; }
-    public Guid UserPortfolioId { get; set; }
+    public required Guid UserPortfolioId { get; set; }
     public UserPortfolio UserPortfolio { get; set; }
     public bool IsClosed { get; private set; }
     public Guid ProductOptionId { get; private set; }

@@ -2,13 +2,11 @@
 
 ## Application overview:
 
-Its a dummy bank system which can be to register as a user then open and interact with a bank account.
+Its a dummy bank system used to learn new concepts and act as a solid base for a DDD, clean code Asp.net api.
 
-There are two disparate systems (a) Users system (b) Accounts system
+There are two disparate applications which aren't split out to represent micro-services (a) Users (b) Accounts
 
-User can sign-up and edit their details
 
-User can open / close an account and deposit / withdraw funds
 
 There is a job which runs on a schedule to apply interest to the account
 
@@ -16,12 +14,11 @@ The user is notified when an action happens on the account
 
 Admin can add and edit products i.e. a kind of bank account
 
-## Concepts to learn
+## Concepts covered
 
-- Authentication end to end on an ASP.NET application (Including configuring the IDP)
+- Authentications by OAuth2.0
 - DDD and clean code principles
 - Transactional Outbox
-- HTTPS configurations
 - Optimistic locking - should be very easy
 - Producing and consuming to kafka
 
@@ -34,8 +31,10 @@ Admin can add and edit products i.e. a kind of bank account
 4. Containerise it
 5. Finish the readme
 6. Add a frontend?
+7. Policy based auth for admins to use endpoints and view specific actions
+8. HTTPS
 
-### Potential technologies to look into
+### Down the line
 
 - Api gateway
 - Open telemetry for logging through seq (or similar) - want to trace through the application
