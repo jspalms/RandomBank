@@ -1,14 +1,19 @@
 # random_bank
 
-## Application overview:
+## Technical Overview
 
 Its a dummy bank system used to learn new concepts and act as a solid base for a DDD, clean code Asp.net api.
+
+This is an event driven system not an event sourced variant
+
+## Application overview:
+
+
 
 There are two disparate applications which aren't split out to represent micro-services (a) Users (b) Accounts
 
 
 
-There is a job which runs on a schedule to apply interest to the account
 
 The user is notified when an action happens on the account
 
