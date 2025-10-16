@@ -6,7 +6,7 @@ using Interfaces;
 
 public class LendingAccountFactory: IAccountFactory
 {
-    public Account CreateAccount(ProductSubType subType, string? description, decimal initialBalance, Guid UserPortfolioID, Guid productOptionId)
+    public Account CreateAccount(ProductType type, string? description, decimal initialBalance, Guid userPortfolioId, Guid productOptionId)
     {
         throw new NotImplementedException();
     }

@@ -28,8 +28,8 @@ public class OpenAccountCommandHandler(
         }
         
         var newAccountId = portfolioAggregate.OpenAccount(
-            productAggregate.Type, 
-            productAggregate.SubType, 
+            productAggregate.BusinessLine, 
+            productAggregate.ProductType, 
             command.productOptionId,
             command.Description, 
             command.InitialBalance ?? 0);

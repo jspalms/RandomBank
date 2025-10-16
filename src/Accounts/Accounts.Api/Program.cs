@@ -16,6 +16,11 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddConfiguredSwagger();
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(OpenAccountCommandHandler).Assembly));
+builder.Services.AddSpaStaticFiles(configuration =>
+{
+    configuration.RootPath = "ClientApp/dist"; // For Vue/React/Angular
+});
+
 
 var app = builder.Build();
 

@@ -1,6 +1,18 @@
 #!/bin/bash
 set -e
 
+echo "Keycloak setup script starting..."
+echo "Waiting for Keycloak to be ready..."
+
+# Wait for Keycloak to be ready
+until curl -s http://localhost:8080 > /dev/null
+do
+  echo "Waiting for Keycloak to be ready..."
+  sleep 5
+done
+
+echo "Keycloak is ready. Starting configuration..."
+
 # Keycloak Config
 KEYCLOAK_URL="http://localhost:8080"
 REALM_NAME="development"
@@ -22,12 +34,6 @@ USERS_ALLOWED_ORIGINS='["+"]'
 
 # Ensure kcadm.sh is accessible
 export PATH=$PATH:/opt/keycloak/bin
-
-# Wait for Keycloak to be ready using kcadm.sh instead of curl
-until kcadm.sh config credentials --server "${KEYCLOAK_URL}" --realm master --user admin --password admin > /dev/null 2>&1; do
-  echo "Waiting for Keycloak to start..."
-  sleep 2
-done
 
 # Login to Keycloak
 kcadm.sh config credentials --server "${KEYCLOAK_URL}" --realm master --user admin --password admin
@@ -73,3 +79,5 @@ if ! kcadm.sh get clients -r ${REALM_NAME} | grep -q "\"clientId\":\"${ACCOUNTS_
     -s "redirectUris=${ACCOUNTS_REDIRECT_URIS}" \
     -s "webOrigins=${ACCOUNTS_ALLOWED_ORIGINS}"
 fi
+
+echo "Keycloak setup completed successfully!"

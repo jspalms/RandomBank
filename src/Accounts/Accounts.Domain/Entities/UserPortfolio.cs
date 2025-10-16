@@ -26,10 +26,23 @@ public class UserPortfolio: AggregateRootBase
         UserISALimits = new UserISALimits();
     }
     
-    public Guid OpenAccount(ProductType productType, ProductSubType productSubType, Guid productOptionId, string description, decimal initialBalance)
+    public Guid OpenAccount(BusinessLine businessLine, ProductType productType, Guid productOptionId, string description, decimal initialBalance)
     {
-        var accountFactory = AccountFactoryProvider.GetFactory(productType);
-        var account = accountFactory.CreateAccount(productSubType, description, initialBalance, Id, productOptionId);
+        var accountFactory = AccountFactoryProvider.GetFactory(businessLine);
+        var account = accountFactory.CreateAccount(productType, description, initialBalance, Id, productOptionId);
+
+        if (account is FixedISAAccount isaAccount)
+        {
+            if (!UserISALimits.CanOpenNewISAAccount(isaAccount))
+            {
+                throw new ISALimitExceededException(Id);
+            }
+            UserISALimits.AddISAAccount(isaAccount);
+        }
+        else if (account is SavingsAccount || account is CurrentAccount)
+        {
+            
+        }
         UserAccounts.Add(account);
         AddDomainEvent(new AccountOpenedEvent(account.Id, Id));
         return account.Id;

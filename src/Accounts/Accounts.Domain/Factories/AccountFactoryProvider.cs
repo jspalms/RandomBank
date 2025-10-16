@@ -5,13 +5,12 @@ using Interfaces;
 
 public static class AccountFactoryProvider
 {
-    public static IAccountFactory GetFactory(ProductType type)
+    public static IAccountFactory GetFactory(BusinessLine type)
     {
         return type switch
         {
-            ProductType.ISA => new ISAAccountFactory(),
-            ProductType.Savings => new SavingsAccountFactory(),
-            ProductType.Lending => new LendingAccountFactory(),
+            BusinessLine.Savings => new SavingsAccountFactory(),
+            BusinessLine.Lending => new LendingAccountFactory(),
             _ => throw new NotSupportedException("No factory for this product type.")
         };
     }

@@ -6,8 +6,8 @@ using SharedKernel.Domain;
 public class Product: AggregateRootBase
 {
     public required string Name { get; set; }
-    public ProductType Type { get; set; }
-    public ProductSubType SubType { get; set; }
+    public BusinessLine BusinessLine { get; set; } //savings or lending
+    public ProductType ProductType { get; set; } //fixed, ISA, motor, mortgage
     public List<ProductOption> ProductOptions { get; set; } = [];
     
     public void AddProductOption(ProductOption productOption)
